@@ -217,22 +217,22 @@ const AboutSection = () => {
 
         {/* Stats or Highlights */}
         <div style={{ display: 'flex', gap: '40px', marginTop: '48px' }}>
-           {statItems.map((item, idx) => (
-             <div key={idx}>
+            {statItems.map((item, idx) => (
+              <div key={idx}>
                 <div style={{ 
-                  fontSize: '2rem', 
-                  fontWeight: 800, 
+                  fontSize: '1.4rem', 
+                  fontWeight: 700, 
                   color: 'white', 
-                  fontFamily: "'Manrope', sans-serif",
+                  fontFamily: "'Oswald', sans-serif",
                   lineHeight: 1,
-                  letterSpacing: '-0.5px',
+                  letterSpacing: '1px',
                   textTransform: 'uppercase'
                 }}>
                   {item.value}
                 </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', letterSpacing: '2px', textTransform: 'uppercase', fontWeight: 800 }}>{item.label}</div>
-             </div>
-           ))}
+                <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', letterSpacing: '1.5px', textTransform: 'uppercase', fontWeight: 700, marginTop: '4px' }}>{item.label}</div>
+              </div>
+            ))}
         </div>
       </motion.div>
 

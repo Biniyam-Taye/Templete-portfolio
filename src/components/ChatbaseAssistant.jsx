@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useProjects } from '../hooks/useProjects';
 import { useCollection } from '../hooks/useCollection';
-import { MessageSquare, X, Sparkles } from 'lucide-react';
+import { MessageSquare, X, Sparkles, Bot } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /**
@@ -41,8 +41,29 @@ const ChatbaseAssistant = () => {
     
     document.body.appendChild(script);
 
+    // Watch for Chatbase's "black background" bug and KILL IT
+    const observer = new MutationObserver(() => {
+      const html = document.documentElement;
+      if (html.classList.contains('__cb_widget_active')) {
+        // Force width and visibility back
+        html.style.setProperty('width', '100vw', 'important');
+        html.style.setProperty('height', '100%', 'important');
+        html.style.setProperty('position', 'relative', 'important');
+        html.style.setProperty('overflow', 'auto', 'important');
+        
+        const body = document.body;
+        body.style.setProperty('width', '100vw', 'important');
+        body.style.setProperty('height', '100%', 'important');
+        body.style.setProperty('position', 'relative', 'important');
+        body.style.setProperty('display', 'block', 'important');
+      }
+    });
+
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
     // Cleanup function
     return () => {
+      observer.disconnect();
       if (document.body.contains(script)) {
         document.body.removeChild(script);
       }
@@ -138,8 +159,8 @@ ${expContext}
             transition={{ delay: 1.5, duration: 0.5 }}
             style={{
               position: 'fixed',
-              bottom: '42px',
-              right: '105px',
+              bottom: window.innerWidth < 768 ? '122px' : '42px',
+              right: window.innerWidth < 768 ? '20px' : '105px',
               background: 'white',
               color: 'black',
               padding: '8px 16px',
@@ -153,12 +174,13 @@ ${expContext}
               pointerEvents: 'none'
             }}
           >
-            Ask AI Assistant
+            {window.innerWidth < 768 ? 'AI' : 'Ask AI Assistant'}
             <div style={{
               position: 'absolute',
-              right: '-6px',
-              top: '50%',
-              transform: 'translateY(-50%) rotate(45deg)',
+              right: window.innerWidth < 768 ? '50%' : '-6px',
+              bottom: window.innerWidth < 768 ? '-6px' : 'auto',
+              top: window.innerWidth < 768 ? 'auto' : '50%',
+              transform: window.innerWidth < 768 ? 'translateX(50%) rotate(45deg)' : 'translateY(-50%) rotate(45deg)',
               width: '12px',
               height: '12px',
               background: 'white',
@@ -177,8 +199,8 @@ ${expContext}
         whileTap={{ scale: 0.9 }}
         style={{
           position: 'fixed',
-          bottom: '30px',
-          right: '30px',
+          bottom: window.innerWidth < 768 ? '110px' : '30px',
+          right: window.innerWidth < 768 ? '20px' : '30px',
           width: '60px',
           height: '60px',
           borderRadius: '50%',

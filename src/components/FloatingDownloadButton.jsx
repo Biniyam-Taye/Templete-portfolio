@@ -6,7 +6,7 @@ import { Download, FileText } from 'lucide-react';
 const FloatingDownloadButton = () => {
   const handleClick = () => {
     const link = document.createElement('a');
-    link.href = '/Mentesnot_Debele_Resume.pdf';
+    link.href = '/cv/Mentesnot_Debele_Resume.pdf';
     link.download = 'Mentesnot_Debele_Resume.pdf';
     document.body.appendChild(link);
     link.click();

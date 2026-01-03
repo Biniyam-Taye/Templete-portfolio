@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { 
   Phone, 
   Mail, 
@@ -13,13 +13,11 @@ import {
   Briefcase
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import html2pdf from 'html2pdf.js';
 import { useCollection } from '../hooks/useCollection';
 import { useProjects } from '../hooks/useProjects';
 
 const ResumePage = () => {
   const navigate = useNavigate();
-  const resumeRef = useRef();
   
   // Data Hooks
   const { data: aboutData } = useCollection('about');
@@ -57,18 +55,12 @@ const ResumePage = () => {
   ];
 
   const handleDownload = () => {
-    const element = resumeRef.current;
-    if (!element) return;
-    
-    const opt = {
-      margin: 0,
-      filename: 'Biniyam_Taye_CV.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-    
-    html2pdf().set(opt).from(element).save();
+    const link = document.createElement('a');
+    link.href = '/cv/Mentesnot_Debele_Resume.pdf';
+    link.download = 'Mentesnot_Debele_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -117,7 +109,7 @@ const ResumePage = () => {
       </div>
 
       {/* A4 Paper Document */}
-      <div ref={resumeRef} className="resume-document" style={{
+      <div className="resume-document" style={{
         width: '210mm',
         minHeight: '297mm',
         backgroundColor: 'white',

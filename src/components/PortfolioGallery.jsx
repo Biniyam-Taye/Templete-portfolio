@@ -75,6 +75,10 @@ const PortfolioGallery = ({ items = [], onItemClick }) => {
               onClick={() => {
                 if (category === 'My Art Collection') {
                   navigate('/art-gallery');
+                } else if (category === 'My Designs') {
+                  navigate('/design-gallery');
+                } else if (category === 'My Memories') {
+                  navigate('/memories-gallery');
                 } else {
                   setActiveCategory(category);
                 }

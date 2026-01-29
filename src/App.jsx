@@ -423,6 +423,8 @@ const PortfolioHome = () => {
 };
 
 import ArtGalleryPage from './components/ArtGalleryPage';
+import DesignGalleryPage from './components/DesignGalleryPage';
+import MemoriesGalleryPage from './components/MemoriesGalleryPage';
 
 function App() {
   return (
@@ -430,6 +432,8 @@ function App() {
       <Routes>
         <Route path="/" element={<PortfolioHome />} />
         <Route path="/art-gallery" element={<ArtGalleryPage />} />
+        <Route path="/design-gallery" element={<DesignGalleryPage />} />
+        <Route path="/memories-gallery" element={<MemoriesGalleryPage />} />
       </Routes>
     </Router>
   );

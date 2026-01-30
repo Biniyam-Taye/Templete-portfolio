@@ -425,6 +425,7 @@ const PortfolioHome = () => {
 import ArtGalleryPage from './components/ArtGalleryPage';
 import DesignGalleryPage from './components/DesignGalleryPage';
 import MemoriesGalleryPage from './components/MemoriesGalleryPage';
+import DiaryPage from './components/DiaryPage';
 
 function App() {
   return (
@@ -434,6 +435,7 @@ function App() {
         <Route path="/art-gallery" element={<ArtGalleryPage />} />
         <Route path="/design-gallery" element={<DesignGalleryPage />} />
         <Route path="/memories-gallery" element={<MemoriesGalleryPage />} />
+        <Route path="/diary" element={<DiaryPage />} />
       </Routes>
     </Router>
   );

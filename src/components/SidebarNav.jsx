@@ -23,7 +23,7 @@ const navItems = [
   { id: 'journey', label: 'Journey', icon: <Plane size={22} />, href: '#journey' },
   { id: 'achievements', label: 'Achievements', icon: <Trophy size={22} />, href: '#achievements' },
   { id: 'plan', label: 'Plan', icon: <Map size={22} />, href: '#plan' },
-  { id: 'diary', label: 'Diary', icon: <Book size={22} />, href: '#diary' },
+  { id: 'diary', label: 'Diary', icon: <Book size={22} />, href: '/diary' },
   { id: 'contact', label: 'Contact', icon: <Mail size={22} />, href: '#contact' },
 ];
 

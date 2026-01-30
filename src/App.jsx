@@ -426,6 +426,15 @@ import ArtGalleryPage from './components/ArtGalleryPage';
 import DesignGalleryPage from './components/DesignGalleryPage';
 import MemoriesGalleryPage from './components/MemoriesGalleryPage';
 import DiaryPage from './components/DiaryPage';
+import ExperimentalMe from './components/ExperimentalMe';
+import MovieDatabase from './components/MovieDatabase';
+import RecipeBook from './components/RecipeBook';
+import CourseList from './components/CourseList';
+import ImportantDocuments from './components/ImportantDocuments';
+import TravelPlanner from './components/TravelPlanner';
+import StrategicThinking from './components/StrategicThinking';
+import DiaryNewEntry from './components/DiaryNewEntry';
+import ExperimentalNewEntry from './components/ExperimentalNewEntry';
 
 function App() {
   return (
@@ -436,6 +445,15 @@ function App() {
         <Route path="/design-gallery" element={<DesignGalleryPage />} />
         <Route path="/memories-gallery" element={<MemoriesGalleryPage />} />
         <Route path="/diary" element={<DiaryPage />} />
+        <Route path="/diary/new" element={<DiaryNewEntry />} />
+        <Route path="/experimental-me" element={<ExperimentalMe />} />
+        <Route path="/experimental-me/new" element={<ExperimentalNewEntry />} />
+        <Route path="/movies" element={<MovieDatabase />} />
+        <Route path="/recipes" element={<RecipeBook />} />
+        <Route path="/courses" element={<CourseList />} />
+        <Route path="/documents" element={<ImportantDocuments />} />
+        <Route path="/travel" element={<TravelPlanner />} />
+        <Route path="/strategy" element={<StrategicThinking />} />
       </Routes>
     </Router>
   );

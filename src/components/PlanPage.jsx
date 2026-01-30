@@ -19,6 +19,7 @@ const PlanPage = () => {
 
     const [tasks, setTasks] = useState([]);
     const [activeFilter, setActiveFilter] = useState('All');
+    const [isOptionsOpen, setIsOptionsOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [newTask, setNewTask] = useState({ title: '', category: 'brain-dump', time: '', date: new Date().toISOString().split('T')[0] });
 
@@ -164,7 +165,34 @@ const PlanPage = () => {
                         </div>
                         <div style={{ display: 'flex', gap: '10px' }}>
                             <button style={{ background: '#222', border: '1px solid #333', color: '#fff', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer' }}>Scheduled</button>
-                            <button style={{ background: '#222', border: '1px solid #333', color: '#fff', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer' }}>Options</button>
+
+                            <div style={{ position: 'relative' }}>
+                                <button
+                                    onClick={() => setIsOptionsOpen(!isOptionsOpen)}
+                                    style={{ background: '#222', border: '1px solid #333', color: '#fff', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer' }}
+                                >
+                                    Options
+                                </button>
+                                {isOptionsOpen && (
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: '100%',
+                                        right: '0',
+                                        marginTop: '5px',
+                                        background: '#222',
+                                        border: '1px solid #333',
+                                        borderRadius: '8px',
+                                        padding: '5px',
+                                        width: '180px',
+                                        zIndex: 100,
+                                        boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                                    }}>
+                                        <div style={{ padding: '10px', fontSize: '14px', color: '#ccc', cursor: 'pointer', borderRadius: '4px' }} className="hover-option">Show Completed</div>
+                                        <div style={{ padding: '10px', fontSize: '14px', color: '#ccc', cursor: 'pointer', borderRadius: '4px' }} className="hover-option">Sort by Priority</div>
+                                        <div style={{ padding: '10px', fontSize: '14px', color: '#ccc', cursor: 'pointer', borderRadius: '4px' }} className="hover-option">Clear All Tasks</div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
 
@@ -392,6 +420,10 @@ const PlanPage = () => {
             </AnimatePresence>
 
             <style>{`
+                .hover-option:hover {
+                    background-color: #333;
+                    color: #fff !important;
+                }
                 @media (max-width: 768px) {
                     .plan-page-root {
                         padding: 20px !important;

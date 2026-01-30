@@ -22,6 +22,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.60.0",
+    "@clerk/themes": "^2.4.51",
     "@firebase/vertexai-preview": "^0.0.4",
     "@google/generative-ai": "^0.24.1",
     "firebase": "^12.7.0",

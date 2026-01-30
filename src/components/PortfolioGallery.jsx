@@ -1,49 +1,69 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, MapPin, Eye } from 'lucide-react';
+import { Calendar, MapPin, Eye, ArrowRight, Sparkles, Code, Palette, Zap, Layout, PenTool, Image, Smartphone, Globe, Cpu, Music, Camera, Layers, Hash, Command } from 'lucide-react';
+
+import { useNavigate } from 'react-router-dom';
 
 const PortfolioGallery = ({ items = [], onItemClick }) => {
   const categories = ['All', ...new Set(items.map(item => item.category).filter(Boolean))];
   const [activeCategory, setActiveCategory] = React.useState('All');
+  const navigate = useNavigate();
 
-  const filteredItems = activeCategory === 'All' 
-    ? items 
+  const filteredItems = activeCategory === 'All'
+    ? items
     : items.filter(item => item.category === activeCategory);
 
   return (
-    <section id="portfolio" className="constellation-wrapper" style={{ 
-      borderTop: '1px solid var(--border-color)', 
+    <section id="portfolio" className="constellation-wrapper" style={{
+      borderTop: '1px solid var(--border-color)',
       padding: '120px 10%',
       position: 'relative'
     }}>
-      {/* Background Pattern */}
-      <div style={{ 
-        position: 'absolute', 
-        top: 0, 
-        left: 0, 
-        width: '100%', 
-        height: '100%', 
-        opacity: 0.05, 
-        pointerEvents: 'none', 
+      {/* Decorative Background Icons */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        overflow: 'hidden',
         zIndex: 0,
-        backgroundImage: 'radial-gradient(circle, var(--accent-primary) 1px, transparent 1px)',
-        backgroundSize: '50px 50px'
-      }} />
+        opacity: 0.04,
+        pointerEvents: 'none',
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '60px',
+        justifyContent: 'center',
+        alignContent: 'flex-start',
+        padding: '20px',
+        maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)'
+      }}>
+        {Array.from({ length: 120 }).map((_, i) => {
+          const Icon = [Code, Palette, Zap, Layout, PenTool, Image, Smartphone, Globe, Cpu, Music, Camera, Layers, Hash, Command][i % 14];
+          return (
+            <Icon
+              key={i}
+              size={24}
+              style={{
+                transform: `rotate(${i * 45}deg)`,
+                opacity: Math.random() * 0.5 + 0.5
+              }}
+            />
+          );
+        })}
+      </div>
 
       <div className="section-header-premium">
 
         <h2 className="section-title-premium">
-          <span className="section-title-accent">PORTFOLIO</span> 
-          <span className="section-title-stroke">GALLERY</span>
+          <span className="section-title-accent">VISUAL</span>
+          <span style={{ color: 'gray' }}>STORIES</span>
         </h2>
       </div>
 
       {/* Category Filter */}
       {categories.length > 1 && (
-        <div style={{ 
-          display: 'flex', 
-          gap: '15px', 
-          justifyContent: 'center', 
+        <div style={{
+          display: 'flex',
+          gap: '15px',
+          justifyContent: 'center',
           marginBottom: '60px',
           flexWrap: 'wrap',
           position: 'relative',
@@ -52,16 +72,26 @@ const PortfolioGallery = ({ items = [], onItemClick }) => {
           {categories.map((category) => (
             <motion.button
               key={category}
-              onClick={() => setActiveCategory(category)}
+              onClick={() => {
+                if (category === 'My Art Collection') {
+                  navigate('/art-gallery');
+                } else if (category === 'My Designs') {
+                  navigate('/design-gallery');
+                } else if (category === 'My Memories') {
+                  navigate('/memories-gallery');
+                } else {
+                  setActiveCategory(category);
+                }
+              }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{
                 padding: '12px 30px',
-                background: activeCategory === category 
-                  ? 'var(--accent-primary)' 
+                background: activeCategory === category
+                  ? 'var(--accent-primary)'
                   : 'rgba(255,255,255,0.03)',
-                color: activeCategory === category 
-                  ? 'black' 
+                color: activeCategory === category
+                  ? 'black'
                   : 'var(--text-primary)',
                 border: `1px solid ${activeCategory === category ? 'var(--accent-primary)' : 'var(--border-color)'}`,
                 borderRadius: '100px',
@@ -81,13 +111,13 @@ const PortfolioGallery = ({ items = [], onItemClick }) => {
       )}
 
       {/* Gallery Grid - Controlling max-width for better balance */}
-      <div 
-        className="grid-premium" 
-        style={{ 
-          position: 'relative', 
+      <div
+        className="grid-premium"
+        style={{
+          position: 'relative',
           zIndex: 1,
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
           gap: '2.5rem',
           justifyContent: 'center',
           maxWidth: '1200px',
@@ -95,18 +125,18 @@ const PortfolioGallery = ({ items = [], onItemClick }) => {
         }}
       >
         {filteredItems.map((item, idx) => (
-          <PortfolioCard 
-            key={item.id || idx} 
-            item={item} 
-            index={idx} 
-            onClick={() => onItemClick(item)} 
+          <PortfolioCard
+            key={item.id || idx}
+            item={item}
+            index={idx}
+            onClick={() => onItemClick(item)}
           />
         ))}
       </div>
 
       {filteredItems.length === 0 && (
-        <div style={{ 
-          textAlign: 'center', 
+        <div style={{
+          textAlign: 'center',
           padding: '100px 20px',
           color: 'var(--text-secondary)',
           position: 'relative',
@@ -149,139 +179,196 @@ const PortfolioCard = ({ item, index, onClick }) => {
   return (
     <motion.div
       layoutId={`portfolio-card-${item.id || index}`}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial="initial"
+      whileInView="visible"
+      whileHover="hover"
       viewport={{ once: true }}
-      transition={{ delay: index * 0.1 }}
-      whileHover={{ y: -10 }}
+      variants={{
+        initial: { opacity: 0, y: 30, borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' },
+        visible: { opacity: 1, y: 0, transition: { delay: index * 0.1 } },
+        hover: {
+          y: -10,
+          borderColor: 'var(--accent-primary)',
+          boxShadow: '0 20px 50px rgba(217, 70, 239, 0.15)'
+        }
+      }}
       onClick={onClick}
+      className="ad-card"
       style={{
-        background: 'var(--card-bg)',
+        position: 'relative',
+        height: '500px', // Taller for more impact
         borderRadius: '24px',
         overflow: 'hidden',
-        border: '1px solid var(--border-color)',
         cursor: 'pointer',
-        position: 'relative',
-        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+        boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+        isolation: 'isolate',
+        border: '1px solid rgba(255,255,255,0.1)'
       }}
     >
-      {/* Image Container */}
-      <div style={{ 
-        position: 'relative', 
-        width: '100%', 
-        paddingTop: '75%',
-        overflow: 'hidden',
-        background: 'rgba(0,0,0,0.1)'
-      }}>
-        <motion.img
-          layoutId={`portfolio-image-${item.id || index}`}
+      {/* Dynamic Background Image */}
+      <motion.div
+        className="ad-bg-image-wrapper"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0
+        }}
+        variants={{
+          hover: { scale: 1.05 }
+        }}
+        transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+      >
+        <img
           src={item.imageUrl || item.image}
           alt={item.title}
           style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
+            filter: 'brightness(0.85) contrast(1.1)'
           }}
-          whileHover={{ scale: 1.1 }}
         />
-        
-        {/* Overlay on Hover */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileHover={{ opacity: 1 }}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'opacity 0.3s ease'
-          }}
-        >
-          <Eye size={40} color="white" />
-        </motion.div>
+        {/* Gradient Overlay for Text Readability */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0.1) 100%)'
+        }} />
+      </motion.div>
 
-        {/* Category Badge */}
-        {item.category && (
-          <div style={{
-            position: 'absolute',
-            top: '15px',
-            right: '15px',
-            padding: '6px 16px',
-            background: 'var(--accent-primary)',
-            color: 'black',
-            borderRadius: '100px',
-            fontSize: '0.7rem',
-            fontWeight: 900,
-            letterSpacing: '1px',
-            textTransform: 'uppercase',
-            fontFamily: "'Inter', sans-serif"
-          }}>
-            {item.category}
-          </div>
-        )}
+      {/* "Sponsored" / Category Tag */}
+      <div style={{
+        position: 'absolute',
+        top: '25px',
+        left: '25px',
+        zIndex: 2,
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        padding: '8px 16px',
+        background: 'rgba(0, 0, 0, 0.6)',
+        backdropFilter: 'blur(12px)',
+        borderRadius: '100px',
+        border: '1px solid rgba(255,255,255,0.15)'
+      }}>
+        <Sparkles size={14} color="var(--accent-primary)" fill="var(--accent-primary)" />
+        <span style={{
+          color: 'white',
+          fontSize: '0.75rem',
+          fontWeight: 700,
+          letterSpacing: '1px',
+          textTransform: 'uppercase'
+        }}>
+          {item.category || 'FEATURED'}
+        </span>
       </div>
 
-      {/* Content */}
-      <div style={{ padding: '25px' }}>
+      {/* Content Overlay */}
+      <motion.div
+        variants={{
+          initial: { gap: '5px' },
+          visible: { gap: '5px' },
+          hover: { gap: '15px' }
+        }}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          padding: '30px',
+          zIndex: 2,
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
         <motion.h3
-          layoutId={`portfolio-title-${item.id || index}`}
           style={{
-            fontSize: '1.5rem',
+            fontSize: '2rem',
             fontFamily: "'Abril Fatface', serif",
-            color: 'var(--text-primary)',
-            marginBottom: '12px',
-            letterSpacing: '0.5px',
-            textTransform: 'uppercase'
+            color: 'white',
+            lineHeight: 1.05,
+            textShadow: '0 2px 10px rgba(0,0,0,0.8)'
           }}
         >
           {item.title}
         </motion.h3>
 
-        <motion.p
-          layoutId={`portfolio-desc-${item.id || index}`}
-          style={{
-            fontSize: '0.95rem',
-            color: 'var(--text-secondary)',
+        <motion.div
+          variants={{
+            initial: { height: 0, opacity: 0 },
+            visible: { height: 0, opacity: 0 },
+            hover: { height: 'auto', opacity: 1 }
+          }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          style={{ overflow: 'hidden' }}
+        >
+          <p style={{
+            fontSize: '1rem',
+            color: 'rgba(255,255,255,0.85)',
             lineHeight: 1.6,
-            marginBottom: '20px',
             fontFamily: "'Inter', sans-serif",
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden'
+            marginBottom: '10px'
+          }}>
+            {item.description || item.desc}
+          </p>
+        </motion.div>
+
+        {/* PROMINENT CTA BUTTON */}
+        <motion.div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginTop: '10px'
           }}
         >
-          {item.description || item.desc}
-        </motion.p>
+          <motion.button
+            variants={{
+              hover: {
+                scale: 1.05,
+                backgroundColor: 'var(--accent-primary)',
+                color: 'black',
+                border: '1px solid var(--accent-primary)'
+              }
+            }}
+            whileTap={{ scale: 0.98 }}
+            style={{
+              background: 'white',
+              color: 'black',
+              border: 'none',
+              padding: '16px 28px',
+              borderRadius: '14px',
+              fontSize: '0.95rem',
+              fontWeight: 800,
+              letterSpacing: '0.5px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              cursor: 'pointer',
+              boxShadow: '0 5px 20px rgba(0,0,0,0.4)',
+              transition: 'all 0.2s ease',
+              flex: 1,
+              maxWidth: '200px'
+            }}
+          >
+            VIEW PROJECT
+            <ArrowRight size={18} />
+          </motion.button>
 
-        {/* Meta Info */}
-        <div style={{ 
-          display: 'flex', 
-          gap: '20px', 
-          fontSize: '0.85rem',
-          color: 'var(--text-secondary)',
-          fontFamily: "'Inter', sans-serif"
-        }}>
-          {item.date && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Calendar size={14} />
-              <span>{item.date}</span>
-            </div>
-          )}
-          {item.location && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <MapPin size={14} />
-              <span>{item.location}</span>
-            </div>
-          )}
-        </div>
-      </div>
+          {/* Subtle indicator if needed */}
+          <div style={{
+            width: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            border: '2px solid rgba(255,255,255,0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <Eye size={18} color="rgba(255,255,255,0.7)" />
+          </div>
+        </motion.div>
+      </motion.div>
     </motion.div>
   );
 };

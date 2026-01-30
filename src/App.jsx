@@ -27,7 +27,7 @@ const PortfolioHome = () => {
   const { data: skills, loading: skillsLoading } = useCollection('skills');
   const { data: journey, loading: journeyLoading } = useCollection('journey');
   const { data: achievements, loading: achievementsLoading } = useCollection('achievements');
-  
+
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedType, setSelectedType] = useState(null); // 'portfolio', 'journey', 'achievement'
   const [galleryIndex, setGalleryIndex] = useState(0);
@@ -66,8 +66,8 @@ const PortfolioHome = () => {
       <SidebarNav />
 
       {/* Main Content with Blur Effect */}
-      <motion.div 
-        animate={{ 
+      <motion.div
+        animate={{
           filter: selectedItem ? 'blur(10px) brightness(0.7)' : 'blur(0px) brightness(1)',
           scale: selectedItem ? 0.98 : 1
         }}
@@ -76,24 +76,24 @@ const PortfolioHome = () => {
       >
         <HeroSection />
         <AboutSection />
-        
-        <PortfolioGallery 
-          items={portfolio} 
-          onItemClick={(item) => handleOpenDetail(item, 'portfolio')} 
+
+        <PortfolioGallery
+          items={portfolio}
+          onItemClick={(item) => handleOpenDetail(item, 'portfolio')}
         />
-        
+
         <SkillsInterests skills={skills} />
-        
-        <JourneyTimeline 
-          milestones={journey} 
-          onOpenDetail={(item) => handleOpenDetail(item, 'journey')} 
+
+        <JourneyTimeline
+          milestones={journey}
+          onOpenDetail={(item) => handleOpenDetail(item, 'journey')}
         />
-        
-        <AchievementsSection 
-          achievements={achievements} 
-          onOpenDetail={(item) => handleOpenDetail(item, 'achievement')} 
+
+        <AchievementsSection
+          achievements={achievements}
+          onOpenDetail={(item) => handleOpenDetail(item, 'achievement')}
         />
-        
+
         <TestimonialsSection />
         <ServicesSection />
         <ContactSection />
@@ -117,16 +117,16 @@ const PortfolioHome = () => {
                 cursor: 'zoom-out'
               }}
             />
-            
+
             <div style={{
-               position: 'fixed',
-               inset: 0,
-               display: 'flex',
-               alignItems: 'center',
-               justifyContent: 'center',
-               zIndex: 2001,
-               pointerEvents: 'none',
-               padding: '40px'
+              position: 'fixed',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 2001,
+              pointerEvents: 'none',
+              padding: '40px'
             }}>
               <motion.div
                 initial={{ scale: 0.9, opacity: 0, y: 30 }}
@@ -149,7 +149,7 @@ const PortfolioHome = () => {
                 }}
               >
                 {/* Close Button */}
-                <button 
+                <button
                   onClick={handleCloseDetail}
                   style={{
                     position: 'absolute',
@@ -171,10 +171,10 @@ const PortfolioHome = () => {
                   <X size={24} />
                 </button>
 
-                <div className="modal-content-grid" style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', 
-                  gap: '50px', 
+                <div className="modal-content-grid" style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+                  gap: '50px',
                   height: '100%',
                   overflowY: 'auto',
                   paddingRight: '10px'
@@ -183,12 +183,12 @@ const PortfolioHome = () => {
                   {images.length > 0 && (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                       <div style={{
-                           width: '100%',
-                           height: '450px',
-                           borderRadius: '24px',
-                           overflow: 'hidden',
-                           boxShadow: '0 30px 60px rgba(0,0,0,0.4)',
-                           position: 'relative'
+                        width: '100%',
+                        height: '450px',
+                        borderRadius: '24px',
+                        overflow: 'hidden',
+                        boxShadow: '0 30px 60px rgba(0,0,0,0.4)',
+                        position: 'relative'
                       }}>
                         <div style={{ position: 'relative', width: '100%', height: '100%', background: 'rgba(0,0,0,0.2)' }}>
                           <div className="custom-slider" style={{
@@ -199,14 +199,14 @@ const PortfolioHome = () => {
                             transform: `translateX(-${galleryIndex * 100}%)`
                           }}>
                             {images.map((img, i) => (
-                              <div key={i} style={{ 
-                                minWidth: '100%', 
-                                height: '100%', 
+                              <div key={i} style={{
+                                minWidth: '100%',
+                                height: '100%',
                                 position: 'relative'
                               }}>
-                                <img 
-                                  src={img} 
-                                  alt={`${selectedItem.title} ${i + 1}`} 
+                                <img
+                                  src={img}
+                                  alt={`${selectedItem.title} ${i + 1}`}
                                   style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                                 />
                               </div>
@@ -216,7 +216,7 @@ const PortfolioHome = () => {
                           {/* Navigation Buttons */}
                           {images.length > 1 && (
                             <>
-                              <button 
+                              <button
                                 onClick={() => setGalleryIndex(prev => Math.max(0, prev - 1))}
                                 style={{
                                   position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)',
@@ -228,7 +228,7 @@ const PortfolioHome = () => {
                               >
                                 <ChevronLeft size={24} />
                               </button>
-                              <button 
+                              <button
                                 onClick={() => setGalleryIndex(prev => Math.min(images.length - 1, prev + 1))}
                                 style={{
                                   position: 'absolute', right: '15px', top: '50%', transform: 'translateY(-50%)',
@@ -244,17 +244,17 @@ const PortfolioHome = () => {
                           )}
                         </div>
                       </div>
-                      
+
                       {/* Gallery Indicators */}
                       {images.length > 1 && (
                         <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                           {images.map((_, i) => (
-                            <div 
-                              key={i} 
-                              style={{ 
-                                width: '8px', 
-                                height: '8px', 
-                                borderRadius: '50%', 
+                            <div
+                              key={i}
+                              style={{
+                                width: '8px',
+                                height: '8px',
+                                borderRadius: '50%',
                                 background: i === galleryIndex ? (selectedItem.color || 'var(--accent-primary)') : 'var(--border-color)',
                                 cursor: 'pointer'
                               }}
@@ -288,25 +288,25 @@ const PortfolioHome = () => {
                         {selectedItem.category || selectedType}
                       </div>
                     )}
-                    
+
                     {/* Title */}
-                    <h2 style={{ 
-                      fontSize: 'clamp(2rem, 5vw, 3.5rem)', 
-                      fontFamily: 'Playfair Display', serif, 
-                      color: 'var(--text-primary)', 
-                      lineHeight: 1.1, 
-                      marginBottom: '20px', 
-                      letterSpacing: '1px', 
-                      textTransform: 'uppercase' 
+                    <h2 style={{
+                      fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+                      fontFamily: 'Playfair Display', serif,
+                      color: 'var(--text-primary)',
+                      lineHeight: 1.1,
+                      marginBottom: '20px',
+                      letterSpacing: '1px',
+                      textTransform: 'uppercase'
                     }}>
                       {selectedItem.title}
                     </h2>
 
                     {/* Subtitle (issuer, location, etc) */}
                     {(selectedItem.issuer || selectedItem.location) && (
-                      <div style={{ 
-                        fontSize: '1.1rem', 
-                        color: selectedItem.color || 'var(--accent-primary)', 
+                      <div style={{
+                        fontSize: '1.1rem',
+                        color: selectedItem.color || 'var(--accent-primary)',
                         marginBottom: '20px',
                         fontFamily: "'Inter', sans-serif, sans-serif",
                         fontWeight: 600
@@ -318,34 +318,34 @@ const PortfolioHome = () => {
                     <div style={{ width: '60px', height: '4px', background: selectedItem.color || 'var(--accent-primary)', marginBottom: '30px' }}></div>
 
                     {/* Description */}
-                    <p style={{ 
-                      fontSize: '1.05rem', 
-                      color: 'var(--text-secondary)', 
-                      lineHeight: 1.8, 
-                      marginBottom: '30px', 
-                      fontFamily: "'Inter', sans-serif, sans-serif", 
-                      fontWeight: 400 
+                    <p style={{
+                      fontSize: '1.05rem',
+                      color: 'var(--text-secondary)',
+                      lineHeight: 1.8,
+                      marginBottom: '30px',
+                      fontFamily: "'Inter', sans-serif, sans-serif",
+                      fontWeight: 400
                     }}>
                       {selectedItem.description || selectedItem.desc}
                     </p>
 
                     {/* Date */}
                     {selectedItem.date && (
-                      <div style={{ 
-                        padding: '15px 20px', 
-                        background: 'rgba(255,255,255,0.02)', 
-                        borderRadius: '16px', 
+                      <div style={{
+                        padding: '15px 20px',
+                        background: 'rgba(255,255,255,0.02)',
+                        borderRadius: '16px',
                         border: `1px dashed ${selectedItem.color || 'var(--accent-primary)'}44`,
                         marginTop: 'auto'
                       }}>
-                        <div style={{ 
-                          fontSize: '0.75rem', 
-                          color: selectedItem.color || 'var(--accent-primary)', 
-                          fontFamily: "'Inter', sans-serif, sans-serif", 
-                          fontWeight: 600, 
-                          letterSpacing: '2px', 
-                          marginBottom: '5px', 
-                          textTransform: 'uppercase' 
+                        <div style={{
+                          fontSize: '0.75rem',
+                          color: selectedItem.color || 'var(--accent-primary)',
+                          fontFamily: "'Inter', sans-serif, sans-serif",
+                          fontWeight: 600,
+                          letterSpacing: '2px',
+                          marginBottom: '5px',
+                          textTransform: 'uppercase'
                         }}>
                           DATE
                         </div>
@@ -357,7 +357,7 @@ const PortfolioHome = () => {
 
                     {/* Link Button */}
                     {selectedItem.link && (
-                      <motion.a 
+                      <motion.a
                         href={selectedItem.link}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -422,11 +422,18 @@ const PortfolioHome = () => {
   );
 };
 
+import ArtGalleryPage from './components/ArtGalleryPage';
+import DesignGalleryPage from './components/DesignGalleryPage';
+import MemoriesGalleryPage from './components/MemoriesGalleryPage';
+
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<PortfolioHome />} />
+        <Route path="/art-gallery" element={<ArtGalleryPage />} />
+        <Route path="/design-gallery" element={<DesignGalleryPage />} />
+        <Route path="/memories-gallery" element={<MemoriesGalleryPage />} />
       </Routes>
     </Router>
   );

@@ -4,7 +4,7 @@ export const dummyData = {
     {
       title: "DIGITAL ARTISAN",
       roles: "UI/UX DESIGNER, CREATIVE DIRECTOR, BRAND STRATEGIST, VISUAL STORYTELLER",
-      imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop", 
+      imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop",
       desc: "Crafting immersive digital experiences that blend aesthetic elegance with intuitive functionality. Specializing in user-centric design and brand identity evolution."
     }
   ],
@@ -15,42 +15,42 @@ export const dummyData = {
       imageUrl: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1000&auto=format&fit=crop",
       stats: "8+ YEARS, 120+ PROJECTS, 15+ AWARDS",
       gallery: [
-         "https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=1000&auto=format&fit=crop",
-         "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=1000&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=1000&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=1000&auto=format&fit=crop"
       ]
     }
   ],
   portfolio: [
     {
       id: "1",
-      title: "Lumina Bank App",
-      category: "Fintech / UI Design",
-      imageUrl: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1000&auto=format&fit=crop",
-      description: "A complete redesign of a mobile banking experience, focusing on financial wellness and accessibility.",
+      title: "Neon Horizons",
+      category: "My Art Collection",
+      imageUrl: "https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=1000&auto=format&fit=crop",
+      description: "A series of digital artworks exploring the intersection of light, color, and futuristic landscapes.",
       gallery: [
-        "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?q=80&w=1000",
-        "https://images.unsplash.com/photo-1556742046-8069509ffa2e?q=80&w=1000"
+        "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1000",
+        "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=1000"
       ],
       link: "#",
       color: "#FF3366"
     },
     {
       id: "2",
-      title: "EcoFashion E-Comm",
-      category: "Web Design",
-      imageUrl: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1000&auto=format&fit=crop",
-      description: "A sustainable fashion marketplace platform built with a minimal carbon footprint design philosophy.",
-      gallery: ["https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1000"],
+      title: "Zenith Identity",
+      category: "My Designs",
+      imageUrl: "https://images.unsplash.com/photo-1626785774573-4b799314346d?q=80&w=1000&auto=format&fit=crop",
+      description: "Complete brand system and visual language designed for a high-end architectural firm.",
+      gallery: ["https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1000"],
       link: "#",
       color: "#00C9A7"
     },
     {
       id: "3",
-      title: "Nebula Dashboard",
-      category: "SaaS Product",
-      imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop",
-      description: "Analytics dashboard for a cloud computing service, simplifying complex data into actionable insights.",
-      gallery: ["https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000"],
+      title: "Tokyo Nights",
+      category: "My Memories",
+      imageUrl: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=1000&auto=format&fit=crop",
+      description: "A photographic journey through the vibrant streets and quiet corners of Tokyo after dark.",
+      gallery: ["https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?q=80&w=1000"],
       link: "#",
       color: "#845EC2"
     }

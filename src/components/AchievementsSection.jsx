@@ -1,12 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Award, Trophy, Medal, Star, Crown, Target } from 'lucide-react';
+import { Award, Trophy, Medal, Star, Crown, Target, ExternalLink } from 'lucide-react';
 
 const AchievementsSection = ({ achievements = [], onOpenDetail }) => {
   return (
     <section id="achievements" style={{
       borderTop: '1px solid var(--border-color)',
-      padding: '120px 10%',
+      padding: '40px 10% 120px',
       background: 'linear-gradient(180deg, var(--bg-color) 0%, rgba(255,107,0,0.02) 100%)',
       position: 'relative'
     }}>
@@ -27,7 +27,7 @@ const AchievementsSection = ({ achievements = [], onOpenDetail }) => {
       <div className="section-header-premium" style={{ marginBottom: '80px' }}>
 
         <h2 className="section-title-premium">
-          <span className="section-title-accent">ACHIEVEMENTS</span> 
+          <span className="section-title-accent">ACHIEVEMENTS</span>
           <span className="section-title-stroke">& AWARDS</span>
         </h2>
       </div>
@@ -51,8 +51,8 @@ const AchievementsSection = ({ achievements = [], onOpenDetail }) => {
       </div>
 
       {achievements.length === 0 && (
-        <div style={{ 
-          textAlign: 'center', 
+        <div style={{
+          textAlign: 'center',
           padding: '100px 20px',
           color: 'var(--text-secondary)',
           position: 'relative',
@@ -99,7 +99,7 @@ const AchievementsSection = ({ achievements = [], onOpenDetail }) => {
 
 const AchievementCard = ({ achievement, index, onClick }) => {
   const getIcon = () => {
-    switch(achievement.type?.toLowerCase()) {
+    switch (achievement.type?.toLowerCase()) {
       case 'trophy': return Trophy;
       case 'medal': return Medal;
       case 'crown': return Crown;
@@ -112,6 +112,8 @@ const AchievementCard = ({ achievement, index, onClick }) => {
   const Icon = getIcon();
   const color = achievement.color || 'var(--accent-primary)';
 
+  const bgImage = achievement.imageUrl || achievement.image || `https://source.unsplash.com/random/400x300?${achievement.title.split(' ')[0]}`;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -120,152 +122,179 @@ const AchievementCard = ({ achievement, index, onClick }) => {
       transition={{ delay: index * 0.1 }}
       whileHover={{ y: -10, scale: 1.02 }}
       onClick={onClick}
+      className="achievement-card-premium"
       style={{
-        background: 'var(--card-bg)',
         borderRadius: '24px',
         overflow: 'hidden',
-        border: `1px solid ${color}44`,
         cursor: 'pointer',
         position: 'relative',
-        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-        boxShadow: `0 10px 40px ${color}11`
+        height: '420px',
+        boxShadow: `0 10px 30px -10px rgba(0,0,0,0.5)`,
+        background: '#000'
       }}
     >
-      {/* Top Accent Bar */}
-      <div style={{
-        height: '6px',
-        background: `linear-gradient(90deg, ${color}, ${color}88)`,
-        width: '100%'
-      }} />
-
-      {/* Content */}
-      <div style={{ padding: '35px' }}>
-        {/* Icon Circle */}
-        <div style={{
-          width: '80px',
-          height: '80px',
-          borderRadius: '50%',
-          background: `${color}15`,
-          border: `3px solid ${color}`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: '25px',
-          position: 'relative'
-        }}>
-          <Icon size={36} color={color} />
-          
-          {/* Glow Effect */}
-          <div style={{
-            position: 'absolute',
-            inset: -10,
-            borderRadius: '50%',
-            background: `radial-gradient(circle, ${color}22 0%, transparent 70%)`,
-            animation: 'pulse 2s ease-in-out infinite',
-            zIndex: -1
-          }} />
-        </div>
-
-        {/* Title */}
-        <h3 style={{
-          fontSize: '1.8rem',
-          fontFamily: "'Abril Fatface', serif, sans-serif",
-          color: 'var(--text-primary)',
-          marginBottom: '12px',
-          letterSpacing: '0.5px',
-          textTransform: 'uppercase',
-          lineHeight: 1.2
-        }}>
-          {achievement.title}
-        </h3>
-
-        {/* Issuer/Organization */}
-        {achievement.issuer && (
-          <div style={{
-            fontSize: '1.1rem',
-            color: color,
-            fontFamily: "'Inter', sans-serif, sans-serif",
-            fontWeight: 600,
-            letterSpacing: '0.5px',
-            marginBottom: '20px'
-          }}>
-            {achievement.issuer}
-          </div>
-        )}
-
-        {/* Description */}
-        <p style={{
-          fontSize: '0.95rem',
-          color: 'var(--text-secondary)',
-          lineHeight: 1.7,
-          marginBottom: '25px',
-          fontFamily: "'Inter', sans-serif, sans-serif",
-          display: '-webkit-box',
-          WebkitLineClamp: 3,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden'
-        }}>
-          {achievement.description || achievement.desc}
-        </p>
-
-        {/* Date Badge */}
-        {achievement.date && (
-          <div style={{
-            display: 'inline-block',
-            padding: '8px 20px',
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid var(--border-color)',
-            borderRadius: '100px',
-            fontSize: '0.85rem',
-            color: 'var(--text-secondary)',
-            fontFamily: "'Inter', sans-serif, sans-serif",
-            fontWeight: 600
-          }}>
-            {achievement.date}
-          </div>
-        )}
-
-        {/* View Details Indicator */}
-        {achievement.imageUrl && (
-          <div style={{
-            marginTop: '20px',
-            fontSize: '0.75rem',
-            color: color,
-            fontFamily: "'Inter', sans-serif, sans-serif",
-            fontWeight: 600,
-            letterSpacing: '1px',
-            textTransform: 'uppercase',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}>
-            <span>Click to view certificate</span>
-            <motion.span
-              animate={{ x: [0, 5, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-            >
-              →
-            </motion.span>
-          </div>
-        )}
-      </div>
-
-      {/* Bottom Decoration */}
       <div style={{
         position: 'absolute',
-        bottom: 0,
-        right: 0,
-        width: '150px',
-        height: '150px',
-        background: `radial-gradient(circle at bottom right, ${color}08 0%, transparent 70%)`,
-        pointerEvents: 'none'
+        inset: 0,
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.6,
+        transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+        filter: 'grayscale(100%) brightness(0.7)'
+      }} className="card-bg-image" />
+
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.2) 100%)',
+        zIndex: 1
       }} />
 
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileHover={{ opacity: 1 }}
+        style={{
+          position: 'absolute', inset: 0,
+          background: `linear-gradient(to top, ${color}cc, transparent)`,
+          zIndex: 2, mixBlendMode: 'overlay'
+        }}
+      />
+
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        padding: '30px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        zIndex: 3
+      }}>
+        <div style={{
+          position: 'absolute',
+          top: '30px',
+          left: '30px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          right: '30px'
+        }}>
+          <div style={{
+            width: '50px',
+            height: '50px',
+            borderRadius: '12px',
+            background: 'rgba(255,255,255,0.1)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255,255,255,0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <Icon size={24} color="#fff" />
+          </div>
+
+          {achievement.date && (
+            <div style={{
+              padding: '8px 16px',
+              borderRadius: '100px',
+              background: 'rgba(0,0,0,0.6)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              fontSize: '0.75rem',
+              color: '#fff',
+              fontFamily: "'JetBrains Mono', monospace"
+            }}>
+              {achievement.date}
+            </div>
+          )}
+        </div>
+
+        <div style={{ transform: 'translateY(20px)', transition: 'transform 0.5s cubic-bezier(0.19, 1, 0.22, 1)', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: '10px' }} className="card-content">
+          {achievement.issuer && (
+            <div style={{
+              color: color || 'var(--accent-primary)',
+              fontSize: '0.85rem',
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              fontWeight: 800,
+              marginBottom: '10px',
+              fontFamily: "'Cinzel', serif",
+              textShadow: '0 2px 4px rgba(0,0,0,0.8)'
+            }}>
+              {achievement.issuer}
+            </div>
+          )}
+
+          <h3 style={{
+            color: '#fff',
+            fontSize: '2.2rem',
+            fontFamily: "'Playfair Display', serif",
+            lineHeight: 1.1,
+            marginBottom: '15px',
+            fontWeight: 700,
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)'
+          }}>
+            {achievement.title}
+          </h3>
+
+          <p style={{
+            color: 'rgba(255,255,255,0.9)',
+            fontSize: '1rem',
+            lineHeight: 1.6,
+            fontFamily: "'Inter', sans-serif",
+            display: '-webkit-box',
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            marginBottom: '25px',
+            fontWeight: 400
+          }}>
+            {achievement.description || achievement.desc}
+          </p>
+
+          <motion.div
+            className="view-btn"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              color: 'var(--accent-primary)',
+              fontSize: '0.85rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '1.5px',
+              padding: '14px 30px',
+              border: '1px solid var(--accent-primary)',
+              borderRadius: '50px',
+              width: 'fit-content',
+              background: 'rgba(0,0,0,0.6)',
+              backdropFilter: 'blur(4px)',
+              transition: 'all 0.3s ease',
+              marginTop: '5px'
+            }}>
+            <span>View Certificate</span>
+            <ExternalLink size={16} style={{ transition: 'transform 0.3s ease' }} className="btn-icon" />
+          </motion.div>
+        </div>
+      </div>
+
       <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 0.5; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.1); }
-        }
+          .achievement-card-premium:hover .card-bg-image {
+              transform: scale(1.1);
+              filter: grayscale(0%) brightness(0.6);
+          }
+          .achievement-card-premium:hover .card-content {
+              transform: translateY(0);
+          }
+          .achievement-card-premium:hover .view-btn {
+              background: var(--accent-primary) !important;
+              color: #fff !important;
+              border-color: var(--accent-primary) !important;
+              box-shadow: 0 0 20px var(--accent-primary)44;
+          }
+           .achievement-card-premium:hover .btn-icon {
+              transform: translateX(3px) translateY(-3px);
+          }
       `}</style>
     </motion.div>
   );

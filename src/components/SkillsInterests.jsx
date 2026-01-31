@@ -1,418 +1,286 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Brain, Heart, DollarSign, Activity, Zap, Users, Shield, Anchor, Target, Scale, Flame, ArrowRight, X
+  Lightbulb, PenTool, Zap, RefreshCw, Heart, Layers, ArrowUpRight, Scale, Anchor, Target, Palette, Feather
 } from 'lucide-react';
 
-// Reusing iconMap for fallback, but main logic will use direct mapping for the 6 principles
-const iconMap = {
-  mentality: Brain,
-  physicality: Activity,
-  health: Activity,
-  financial: DollarSign,
-  wealth: DollarSign,
-  spirituality: Anchor,
-  spiritual: Anchor,
-  intellect: Zap,
-  growth: Zap,
-  relationships: Users,
-  social: Users
-};
-
-// The 6 Core Principles Data
-const corePrinciples = [
+const philosophies = [
   {
-    id: "p1",
-    title: "MENTALITY",
-    subtitle: "The Fortress",
-    icon: "mentality",
+    id: "ph1",
+    title: "VISION",
+    subtitle: "The North Star",
+    icon: Lightbulb,
+    color: "#facc15", // Yellow
+    description: "Seeing beyond the immediate horizon. It's not just about what we build today, but how it shapes the future.",
+    tags: ["Foresight", "Innovation", "Clarity"]
+  },
+  {
+    id: "ph2",
+    title: "CRAFT",
+    subtitle: "The Foundation",
+    icon: PenTool,
     color: "#a855f7", // Purple
-    description: "An unbreakable mind is the foundation of all success. Cultivating resilience, focus, and an unwavering belief in one's vision, regardless of external circumstances.",
-    tags: ["Resilience", "Discipline", "Focus"]
+    description: "Merging logic with aesthetics. Every line of code and every pixel is placed with intentionality and precision.",
+    tags: ["Precision", "Artistry", "Quality"]
   },
   {
-    id: "p2",
-    title: "PHYSICALITY",
-    subtitle: "The Vessel",
-    icon: "health",
+    id: "ph3",
+    title: "VELOCITY",
+    subtitle: "The Momentum",
+    icon: Zap,
     color: "#ef4444", // Red
-    description: "The body is the vehicle through which we experience life. Prioritizing strength, vitality, and longevity to ensuring peak performance in all other arenas.",
-    tags: ["Strength", "Energy", "Longevity"]
+    description: "Speed matters, but direction matters more. moving fast without breaking things by building on solid architecture.",
+    tags: ["Speed", "Efficiency", "Agility"]
   },
   {
-    id: "p3",
-    title: "FINANCIAL",
-    subtitle: "The Engine",
-    icon: "financial",
-    color: "#22c55e", // Green
-    description: "Building sustainable wealth not just for luxury, but for freedom. Mastering resources to create impact, security, and opportunities for others.",
-    tags: ["Freedom", "Investment", "Security"]
-  },
-  {
-    id: "p4",
-    title: "SPIRITUALITY",
-    subtitle: "The Anchor",
-    icon: "spiritual",
+    id: "ph4",
+    title: "ADAPTABILITY",
+    subtitle: "The Flow",
+    icon: RefreshCw,
     color: "#3b82f6", // Blue
-    description: "Connecting to a purpose greater than oneself. Finding grounding through gratitude, mindfulness, and an alignment with core values.",
-    tags: ["Purpose", "Peace", "Gratitude"]
+    description: "The only constant is change. Thriving in ambiguity and pivoting strategies as technology evolves.",
+    tags: ["Flexibility", "Growth", "Evolution"]
   },
   {
-    id: "p5",
-    title: "INTELLECT",
-    subtitle: "The Blade",
-    icon: "intellect",
-    color: "#eab308", // Yellow
-    description: "Sharpening the mind through constant learning and curiosity. Adapting to new information and seeking truth in a complex world.",
-    tags: ["Learning", "Curiosity", "Wisdom"]
-  },
-  {
-    id: "p6",
-    title: "RELATIONSHIPS",
-    subtitle: "The Network",
-    icon: "relationships",
+    id: "ph5",
+    title: "IMPACT",
+    subtitle: "The Purpose",
+    icon: Heart,
     color: "#ec4899", // Pink
-    description: "Success is meaningless in isolation. Building deep, authentic connections and leading with empathy to uplift the collective.",
-    tags: ["Leadership", "Empathy", "Community"]
+    description: "Building for people, not just screens. Creating solutions that solve real problems and elevate the human experience.",
+    tags: ["Empathy", "User-Centric", "Value"]
+  },
+  {
+    id: "ph6",
+    title: "STRUCTURE",
+    subtitle: "The Framework",
+    icon: Layers,
+    color: "#10b981", // Emerald
+    description: "Scalable systems are beautiful systems. Writing clean, maintainable code that stands the test of time.",
+    tags: ["Scalability", "Order", "Logic"]
   }
 ];
 
 const SkillsInterests = () => {
-  const [selectedPrinciple, setSelectedPrinciple] = useState(null);
-
-  const getIcon = (iconName) => {
-    const Icon = iconMap[iconName] || Zap;
-    return Icon;
-  };
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   return (
-    <>
-      <section id="principles" style={{
-        borderTop: '1px solid var(--border-color)',
-        background: 'var(--bg-color)', // Dark theme background from global CSS
-        padding: '120px 10%',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        {/* Background Ambient Glow */}
+    <section id="philosophy" style={{
+      padding: '120px 5%',
+      background: 'var(--bg-color)',
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      {/* Dynamic Background */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'radial-gradient(circle at 10% 20%, rgba(255,255,255,0.03) 0%, transparent 40%)',
+        zIndex: 0
+      }} />
+
+      <div className="section-header-premium" style={{ marginBottom: '100px', position: 'relative', zIndex: 1, textAlign: 'center', width: '100%', maxWidth: '1000px', margin: '0 auto 80px' }}>
+
+        {/* Decorative Watermark */}
         <div style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '80%',
-          height: '80%',
-          background: 'radial-gradient(circle, rgba(139, 92, 246, 0.05) 0%, rgba(0,0,0,0) 70%)',
+          fontSize: '15rem',
+          fontWeight: 900,
+          color: 'rgba(255,255,255,0.02)',
+          fontFamily: "'Playfair Display', serif", // More elegant font
+          zIndex: -1,
           pointerEvents: 'none',
-          zIndex: 0
-        }} />
-
-        <div className="section-header-premium" style={{ marginBottom: '80px', position: 'relative', zIndex: 1 }}>
-          <h2 className="section-title-premium">
-            <span className="section-title-accent">MY CORE</span>
-            <span className="section-title-stroke"> PRINCIPLES</span>
-          </h2>
-          <p style={{
-            maxWidth: '700px',
-            margin: '20px auto 0',
-            textAlign: 'center',
-            color: 'var(--text-secondary)',
-            fontSize: '1rem',
-            lineHeight: 1.6,
-            fontFamily: "'Inter', sans-serif"
-          }}>
-            The six pillars that define my approach to life, work, and growth. A holistic framework for sustainable success.
-          </p>
+          whiteSpace: 'nowrap'
+        }}>
+          06
         </div>
 
-        {/* Monolith Cards Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '30px',
-          position: 'relative',
-          zIndex: 1
-        }}>
-          {corePrinciples.map((principle, idx) => {
-            const Icon = getIcon(principle.icon);
+        {/* Left Decorative Group */}
+        <div style={{ position: 'absolute', top: '50%', left: '0', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', gap: '20px', opacity: 0.4, paddingLeft: '40px' }} className="header-decor-left">
+          <div style={{ width: '60px', height: '1px', background: 'var(--accent-primary)' }}></div>
+          <Palette size={24} color="var(--accent-primary)" />
+          <div style={{ fontFamily: "'Cinzel', serif", fontSize: '0.8rem', color: 'var(--accent-primary)', writingMode: 'vertical-rl', transform: 'rotate(180deg)', letterSpacing: '2px' }}>ARTISTRY</div>
+        </div>
 
-            return (
-              <motion.div
-                key={principle.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                whileHover={{ y: -10, boxShadow: `0 20px 40px -10px ${principle.color}30` }}
-                onClick={() => setSelectedPrinciple(principle)}
-                style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '24px',
-                  padding: '40px 30px',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  textAlign: 'center',
-                  minHeight: '400px', // Tall vertical cards
-                  justifyContent: 'center'
-                }}
-              >
-                {/* Glowing Border Gradient Overlay */}
+        {/* Right Decorative Group */}
+        <div style={{ position: 'absolute', top: '50%', right: '0', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', gap: '20px', opacity: 0.4, paddingRight: '40px' }} className="header-decor-right">
+          <div style={{ fontFamily: "'Cinzel', serif", fontSize: '0.8rem', color: 'var(--accent-secondary)', writingMode: 'vertical-rl', letterSpacing: '2px' }}>DESIGN</div>
+          <Feather size={24} color="var(--accent-secondary)" />
+          <div style={{ width: '60px', height: '1px', background: 'var(--accent-secondary)' }}></div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          style={{ display: 'inline-block', padding: '8px 24px', borderRadius: '50px', border: '1px solid rgba(255,255,255,0.1)', marginBottom: '25px', background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(5px)' }}
+        >
+          <span style={{ fontSize: '0.75rem', letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--text-secondary)', fontFamily: "'JetBrains Mono', monospace", display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent-primary)' }}></span>
+            The Code
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent-secondary)' }}></span>
+          </span>
+        </motion.div>
+
+        <h2 className="section-title-premium" style={{ position: 'relative', display: 'inline-block' }}>
+          <span className="section-title-accent">MY</span>
+          <span className="section-title-stroke"> PHILOSOPHY</span>
+          {/* Subtle glow behind title */}
+          <div style={{ position: 'absolute', inset: '-20px', background: 'var(--accent-primary)', filter: 'blur(50px)', zIndex: -1, opacity: 0.15 }}></div>
+        </h2>
+      </div>
+
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+        gap: '24px',
+        maxWidth: '1400px',
+        margin: '0 auto',
+        position: 'relative',
+        zIndex: 1
+      }}>
+        {philosophies.map((item, idx) => {
+          const Icon = item.icon;
+          const isHovered = hoveredIndex === idx;
+
+          return (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              onMouseEnter={() => setHoveredIndex(idx)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              style={{
+                position: 'relative',
+                background: 'var(--card-bg)',
+                border: `1px solid ${isHovered ? item.color : 'var(--border-color)'}`,
+                borderRadius: '24px',
+                padding: '40px',
+                height: '320px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                cursor: 'default',
+                overflow: 'hidden',
+                transition: 'all 0.4s ease',
+                boxShadow: isHovered ? `0 20px 40px -10px ${item.color}22` : 'none'
+              }}
+            >
+              {/* Background Gradient Hover */}
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                background: `radial-gradient(circle at top right, ${item.color}15 0%, transparent 60%)`,
+                opacity: isHovered ? 1 : 0,
+                transition: 'opacity 0.4s ease'
+              }} />
+
+              <div>
                 <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  borderRadius: '24px',
-                  padding: '1px',
-                  background: `linear-gradient(180deg, rgba(255,255,255,0.1) 0%, ${principle.color} 100%)`,
-                  WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                  WebkitMaskComposite: 'xor',
-                  maskComposite: 'exclude',
-                  pointerEvents: 'none',
-                  opacity: 0.5
-                }} />
-
-                {/* Animated Background Blob */}
-                <motion.div
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.1, 0.2, 0.1]
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: idx * 0.5
-                  }}
-                  style={{
-                    position: 'absolute',
-                    top: '20%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: '150px',
-                    height: '150px',
-                    borderRadius: '50%',
-                    background: principle.color,
-                    filter: 'blur(60px)',
-                    zIndex: 0
-                  }} />
-
-                {/* Content */}
-                <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>
-                  {/* Icon */}
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  marginBottom: '30px'
+                }}>
                   <div style={{
-                    width: '80px',
-                    height: '80px',
-                    borderRadius: '50%',
-                    background: `rgba(0,0,0,0.3)`,
-                    border: `1px solid ${principle.color}40`,
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '12px',
+                    background: isHovered ? item.color : 'rgba(255,255,255,0.05)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    margin: '0 auto 30px',
-                    boxShadow: `0 0 20px ${principle.color}20`
+                    transition: 'all 0.4s ease',
+                    color: isHovered ? '#000' : item.color
                   }}>
-                    <Icon size={36} color={principle.color} strokeWidth={1.5} />
+                    <Icon size={24} />
                   </div>
-
-                  {/* Subtitle */}
                   <div style={{
-                    fontSize: '0.8rem',
-                    color: principle.color,
-                    fontFamily: "'Inter', sans-serif",
-                    textTransform: 'uppercase',
-                    letterSpacing: '2px',
-                    marginBottom: '10px',
-                    fontWeight: 600
-                  }}>
-                    {principle.subtitle}
-                  </div>
-
-                  {/* Title */}
-                  <h3 style={{
-                    fontSize: '2rem',
-                    fontFamily: "'Abril Fatface', serif",
-                    color: 'white',
-                    marginBottom: '20px',
-                    letterSpacing: '1px',
-                    lineHeight: 1
-                  }}>
-                    {principle.title}
-                  </h3>
-
-                  {/* Description (Truncated) */}
-                  <p style={{
-                    fontSize: '0.95rem',
-                    color: 'rgba(255,255,255,0.6)',
-                    lineHeight: 1.6,
-                    fontFamily: "'Inter', sans-serif",
-                    marginBottom: '30px',
-                    maxHeight: '80px',
-                    overflow: 'hidden'
-                  }}>
-                    {principle.description}
-                  </p>
-
-                  {/* Button */}
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      color: 'white',
-                      fontSize: '0.9rem',
-                      fontWeight: 600,
-                      padding: '10px 20px',
-                      borderRadius: '100px',
-                      background: `linear-gradient(90deg, ${principle.color}20, ${principle.color}40)`,
-                      border: `1px solid ${principle.color}40`,
-                      cursor: 'pointer'
-                    }}
-                  >
-                    EXPLORE <ArrowRight size={16} />
-                  </motion.div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Detail Modal */}
-      <AnimatePresence>
-        {selectedPrinciple && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedPrinciple(null)}
-              style={{
-                position: 'fixed',
-                inset: 0,
-                background: 'rgba(0,0,0,0.9)',
-                backdropFilter: 'blur(10px)',
-                zIndex: 2000,
-                cursor: 'pointer'
-              }}
-            />
-
-            <div style={{
-              position: 'fixed',
-              inset: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 2001,
-              pointerEvents: 'none',
-              padding: '20px'
-            }}>
-              <motion.div
-                layoutId={`principle-card-${selectedPrinciple.id}`}
-                initial={{ scale: 0.9, opacity: 0, y: 30 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.9, opacity: 0, y: 30 }}
-                style={{
-                  width: 'min(600px, 95vw)',
-                  background: '#111',
-                  border: `1px solid ${selectedPrinciple.color}`,
-                  borderRadius: '30px',
-                  padding: '50px',
-                  boxShadow: `0 0 100px ${selectedPrinciple.color}20`,
-                  position: 'relative',
-                  pointerEvents: 'auto',
-                  overflow: 'hidden'
-                }}
-              >
-                {/* Background Glow inside Modal */}
-                <div style={{
-                  position: 'absolute',
-                  top: '-50%',
-                  left: '-50%',
-                  width: '200%',
-                  height: '200%',
-                  background: `radial-gradient(circle, ${selectedPrinciple.color}10 0%, transparent 60%)`,
-                  pointerEvents: 'none',
-                  zIndex: 0
-                }} />
-
-                <button
-                  onClick={() => setSelectedPrinciple(null)}
-                  style={{
-                    position: 'absolute',
-                    top: '20px',
-                    right: '20px',
-                    background: 'none',
-                    border: 'none',
-                    color: 'rgba(255,255,255,0.5)',
-                    cursor: 'pointer',
-                    zIndex: 10
-                  }}
-                >
-                  <X size={24} />
-                </button>
-
-                <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
-                  <div style={{ marginBottom: '20px', color: selectedPrinciple.color }}>
-                    {React.createElement(getIcon(selectedPrinciple.icon), { size: 64 })}
-                  </div>
-
-                  <h2 style={{
-                    fontFamily: "'Abril Fatface', serif",
-                    fontSize: '3rem',
-                    color: 'white',
-                    marginBottom: '10px'
-                  }}>
-                    {selectedPrinciple.title}
-                  </h2>
-
-                  <div style={{
-                    fontFamily: "'Inter', sans-serif",
-                    color: selectedPrinciple.color,
-                    textTransform: 'uppercase',
-                    letterSpacing: '3px',
-                    marginBottom: '30px',
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: '0.9rem',
+                    color: 'rgba(255,255,255,0.3)',
                     fontWeight: 700
                   }}>
-                    {selectedPrinciple.subtitle}
-                  </div>
-
-                  <p style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: '1.1rem',
-                    color: 'rgba(255,255,255,0.8)',
-                    lineHeight: 1.7,
-                    marginBottom: '40px'
-                  }}>
-                    {selectedPrinciple.description}
-                  </p>
-
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
-                    {selectedPrinciple.tags.map((tag, i) => (
-                      <span key={i} style={{
-                        padding: '8px 16px',
-                        borderRadius: '100px',
-                        border: `1px solid ${selectedPrinciple.color}40`,
-                        color: selectedPrinciple.color,
-                        fontSize: '0.8rem',
-                        fontFamily: "'Inter', sans-serif"
-                      }}>
-                        {tag}
-                      </span>
-                    ))}
+                    0{idx + 1}
                   </div>
                 </div>
-              </motion.div>
-            </div>
-          </>
-        )}
-      </AnimatePresence>
-    </>
+
+                <h3 style={{
+                  fontSize: '2rem',
+                  fontFamily: "'Cinzel', serif",
+                  color: 'var(--text-primary)',
+                  marginBottom: '10px'
+                }}>
+                  {item.title}
+                </h3>
+
+                <div style={{
+                  fontSize: '0.8rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '2px',
+                  color: item.color,
+                  fontWeight: 700,
+                  marginBottom: '20px',
+                  fontFamily: "'Inter', sans-serif"
+                }}>
+                  {item.subtitle}
+                </div>
+              </div>
+
+              <div>
+                <p style={{
+                  fontSize: '0.95rem',
+                  color: 'var(--text-secondary)',
+                  lineHeight: 1.6,
+                  fontFamily: "'Inter', sans-serif",
+                  marginBottom: '20px',
+                  opacity: isHovered ? 1 : 0.7,
+                  transition: 'opacity 0.3s ease'
+                }}>
+                  {item.description}
+                </p>
+
+                <div style={{ height: '1px', width: '100%', background: 'rgba(255,255,255,0.1)', marginBottom: '20px' }} />
+
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  {item.tags.map(tag => (
+                    <span key={tag} style={{
+                      fontSize: '0.75rem',
+                      color: isHovered ? '#fff' : 'rgba(255,255,255,0.4)',
+                      padding: '4px 10px',
+                      borderRadius: '4px',
+                      background: 'rgba(255,255,255,0.05)',
+                      transition: 'color 0.3s ease'
+                    }}>
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+            #philosophy {
+                padding: 80px 5% !important;
+            }
+            .section-title-premium {
+                font-size: 2rem !important;
+            }
+            .header-decor-left, .header-decor-right {
+                display: none !important;
+            }
+        }
+      `}</style>
+    </section>
   );
 };
 

@@ -35,9 +35,9 @@ const TestimonialsSection = () => {
   const [index, setIndex] = useState(0);
 
   const testimonialsData = dbTestimonials.length > 0 ? dbTestimonials.map(t => ({
-      ...t,
-      text: t.quote || t.text,
-      avatarColor: t.avatarColor || ['#ff6b00', '#ff9e00', '#8b5cf6', '#ffcc00'][Math.floor(Math.random() * 4)]
+    ...t,
+    text: t.quote || t.text,
+    avatarColor: t.avatarColor || ['#ff6b00', '#ff9e00', '#8b5cf6', '#ffcc00'][Math.floor(Math.random() * 4)]
   })) : staticTestimonials;
 
   useEffect(() => {
@@ -56,10 +56,10 @@ const TestimonialsSection = () => {
   return (
     <section id="testimonials" className="testimonials-section" style={{
       position: 'relative',
-      padding: '120px 0',
+      padding: '60px 0',
       background: 'var(--bg-color)',
       overflow: 'hidden',
-      minHeight: '900px',
+      minHeight: '700px',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -67,50 +67,69 @@ const TestimonialsSection = () => {
       transition: 'background 0.5s ease'
     }}>
       <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '800px',
-          height: '800px',
-          background: 'radial-gradient(circle, var(--accent-primary)08 0%, transparent 60%)',
-          zIndex: 0
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '800px',
+        height: '800px',
+        background: 'radial-gradient(circle, var(--accent-primary)08 0%, transparent 60%)',
+        zIndex: 0
+      }} />
+
+      {/* Grid Overlay */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px)',
+        backgroundSize: '40px 40px',
+        opacity: 0.2,
+        zIndex: 0,
+        pointerEvents: 'none'
       }} />
 
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
-        style={{ textAlign: 'center', marginBottom: '100px', zIndex: 2 }}
+        style={{ textAlign: 'center', marginBottom: '50px', zIndex: 2, position: 'relative' }}
       >
-        <div style={{ 
-            display: 'inline-flex', 
-            alignItems: 'center', 
-            gap: '15px', 
-            padding: '10px 25px', 
-            background: 'var(--card-bg)', 
-            borderRadius: '100px', 
-            border: '1px solid var(--border-color)', 
-            marginBottom: '25px',
-            boxShadow: '0 10px 30px rgba(0,0,0,0.05)'
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', top: '-40px', left: '50%', marginLeft: '-320px', opacity: 0.1 }}>
+          <Quote size={80} color="var(--accent-primary)" style={{ transform: 'scaleX(-1)' }} />
+        </motion.div>
+
+        <motion.div animate={{ rotate: -360 }} transition={{ duration: 25, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', top: '20px', right: '50%', marginRight: '-320px', opacity: 0.1 }}>
+          <Quote size={60} color="var(--accent-secondary)" />
+        </motion.div>
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '12px',
+          padding: '12px 28px',
+          background: 'rgba(255, 255, 255, 0.03)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '100px',
+          border: '1px solid var(--accent-primary)',
+          marginBottom: '30px',
+          boxShadow: '0 0 20px var(--accent-primary)22'
         }}>
-            <MessageSquare size={18} className="gradient-text" />
-                    <span style={{ fontSize: '0.8rem', fontWeight: 600, fontFamily: "'Inter', sans-serif", letterSpacing: '4px', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>Voice of Clients</span>
+          <MessageSquare size={16} color="var(--accent-primary)" />
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", letterSpacing: '3px', textTransform: 'uppercase', color: 'var(--text-primary)' }}>Voice of Clients</span>
         </div>
         <h2 className="section-title-premium">
-          <span className="section-title-accent">ECHOES</span> OF <span className="section-title-stroke">TRUST</span>
+          <span className="section-title-accent">STORIES</span> OF <span className="section-title-stroke">SUCCESS</span>
         </h2>
       </motion.div>
 
       <div style={{
-          position: 'relative',
-          width: '100%',
-          maxWidth: '1200px',
-          height: '550px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          perspective: '2000px',
-          zIndex: 2
+        position: 'relative',
+        width: '100%',
+        maxWidth: '1200px',
+        height: '550px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        perspective: '2000px',
+        zIndex: 2
       }}>
         {testimonialsData.map((test, i) => {
           let position = i - index;
@@ -147,7 +166,7 @@ const TestimonialsSection = () => {
                 pointerEvents: isActive ? 'auto' : 'none'
               }}
             >
-              <div 
+              <div
                 className="testimonial-card"
                 style={{
                   width: '100%',
@@ -162,8 +181,8 @@ const TestimonialsSection = () => {
                   position: 'relative',
                   boxShadow: isActive ? '0 30px 60px rgba(0,0,0,0.1)' : 'none',
                   transition: 'background 0.5s ease, border 0.5s ease'
-              }}>
-                <div 
+                }}>
+                <div
                   className="quote-icon"
                   style={{
                     position: 'absolute',
@@ -178,11 +197,11 @@ const TestimonialsSection = () => {
                     justifyContent: 'center',
                     boxShadow: `0 10px 30px ${test.avatarColor}44`,
                     zIndex: 2
-                }}>
-                    <Quote size={35} color="var(--bg-color)" fill="var(--bg-color)" />
+                  }}>
+                  <Quote size={35} color="var(--bg-color)" fill="var(--bg-color)" />
                 </div>
 
-                <p 
+                <p
                   className="testimonial-text"
                   style={{
                     fontSize: '1.35rem',
@@ -200,46 +219,46 @@ const TestimonialsSection = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center'
-                }}>
-                    "{test.text}"
+                  }}>
+                  "{test.text}"
                 </p>
 
-                <div 
+                <div
                   className="star-rating"
                   style={{ display: 'flex', gap: '4px', marginBottom: '20px', color: test.avatarColor, justifyContent: 'center' }}>
-                    {[...Array(5)].map((_, it) => <Star key={it} size={14} fill={test.avatarColor} />)}
+                  {[...Array(5)].map((_, it) => <Star key={it} size={14} fill={test.avatarColor} />)}
                 </div>
 
-                <div 
+                <div
                   className="testimonial-author"
                   style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '20px', justifyContent: 'center' }}>
-                    <div style={{
-                        width: '50px',
-                        height: '50px',
-                        borderRadius: '50%',
-                        background: `conic-gradient(from 0deg, ${test.avatarColor}, transparent)`,
-                        padding: '2px'
-                    }}>
-                        <div style={{ width: '100%', height: '100%', borderRadius: '50%', background: 'var(--card-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, color: test.avatarColor }}>
-                            {test.name.charAt(0)}
-                        </div>
+                  <div style={{
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '50%',
+                    background: `conic-gradient(from 0deg, ${test.avatarColor}, transparent)`,
+                    padding: '2px'
+                  }}>
+                    <div style={{ width: '100%', height: '100%', borderRadius: '50%', background: 'var(--card-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, color: test.avatarColor }}>
+                      {test.name.charAt(0)}
                     </div>
-                    <div>
-                        <h4 style={{ color: 'var(--text-primary)', fontWeight: 800, fontSize: '1.1rem', margin: 0, fontFamily: "'Abril Fatface', serif", textTransform: 'uppercase', letterSpacing: '1px' }}>{test.name}</h4>
-                        {test.role && (
-                          <span style={{ 
-                              color: 'var(--text-secondary)', 
-                              fontSize: '0.8rem', 
-                              display: 'block',
-                              marginTop: '2px',
-                              fontWeight: 600,
-                              fontFamily: "'Inter', sans-serif"
-                            }}
-                          >
-                            {test.role} {test.company ? `@ ${test.company}` : ''}
-                          </span>
-                        )}
-                    </div>
+                  </div>
+                  <div>
+                    <h4 style={{ color: 'var(--text-primary)', fontWeight: 800, fontSize: '1.1rem', margin: 0, fontFamily: "'Abril Fatface', serif", textTransform: 'uppercase', letterSpacing: '1px' }}>{test.name}</h4>
+                    {test.role && (
+                      <span style={{
+                        color: 'var(--text-secondary)',
+                        fontSize: '0.8rem',
+                        display: 'block',
+                        marginTop: '2px',
+                        fontWeight: 600,
+                        fontFamily: "'Inter', sans-serif"
+                      }}
+                      >
+                        {test.role} {test.company ? `@ ${test.company}` : ''}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -249,50 +268,50 @@ const TestimonialsSection = () => {
 
       <div className="testimonial-nav" style={{ display: 'flex', alignItems: 'center', gap: '40px', marginTop: '80px', zIndex: 3 }}>
         <motion.button
-            whileHover={{ scale: 1.1, x: -5 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={prev}
-            style={{ 
-                background: 'transparent', 
-                border: 'none', 
-                color: 'var(--text-primary)', 
-                cursor: 'pointer',
-                opacity: 0.5
-            }}
+          whileHover={{ scale: 1.1, x: -5 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={prev}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: 'var(--text-primary)',
+            cursor: 'pointer',
+            opacity: 0.5
+          }}
         >
-            <ChevronLeft size={40} />
+          <ChevronLeft size={40} />
         </motion.button>
 
         <div className="testimonial-dots" style={{ display: 'flex', gap: '15px' }}>
-            {testimonialsData.map((_, i) => (
-                <div 
-                    key={i}
-                    style={{
-                        width: '12px',
-                        height: '12px',
-                        borderRadius: '50%',
-                        background: i === index ? 'var(--accent-primary)' : 'var(--border-color)',
-                        transform: i === index ? 'scale(1.4)' : 'scale(1)',
-                        transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                        boxShadow: i === index ? `0 0 15px var(--accent-primary)` : 'none'
-                    }}
-                />
-            ))}
+          {testimonialsData.map((_, i) => (
+            <div
+              key={i}
+              style={{
+                width: '12px',
+                height: '12px',
+                borderRadius: '50%',
+                background: i === index ? 'var(--accent-primary)' : 'var(--border-color)',
+                transform: i === index ? 'scale(1.4)' : 'scale(1)',
+                transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                boxShadow: i === index ? `0 0 15px var(--accent-primary)` : 'none'
+              }}
+            />
+          ))}
         </div>
 
         <motion.button
-            whileHover={{ scale: 1.1, x: 5 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={next}
-            style={{ 
-                background: 'transparent', 
-                border: 'none', 
-                color: 'var(--text-primary)', 
-                cursor: 'pointer',
-                opacity: 0.5
-            }}
+          whileHover={{ scale: 1.1, x: 5 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={next}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: 'var(--text-primary)',
+            cursor: 'pointer',
+            opacity: 0.5
+          }}
         >
-            <ChevronRight size={40} />
+          <ChevronRight size={40} />
         </motion.button>
       </div>
 

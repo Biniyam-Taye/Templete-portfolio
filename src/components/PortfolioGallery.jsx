@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Eye, ArrowRight, Sparkles, Code, Palette, Zap, Layout, PenTool, Image, Smartphone, Globe, Cpu, Music, Camera, Layers, Hash, Command } from 'lucide-react';
-
 import { useNavigate } from 'react-router-dom';
 
 const PortfolioGallery = ({ items = [], onItemClick }) => {
@@ -51,8 +50,7 @@ const PortfolioGallery = ({ items = [], onItemClick }) => {
       </div>
 
       <div className="section-header-premium">
-
-        <h2 className="section-title-premium">
+        <h2 className="section-title-premium" style={{ fontFamily: "'Inter', sans-serif" }}>
           <span className="section-title-accent">VISUAL</span>
           <span style={{ color: 'gray' }}>STORIES</span>
         </h2>
@@ -60,12 +58,14 @@ const PortfolioGallery = ({ items = [], onItemClick }) => {
 
       {/* Category Filter */}
       {categories.length > 1 && (
-        <div style={{
+        <div className="filter-container" style={{
           display: 'flex',
-          gap: '15px',
-          justifyContent: 'center',
-          marginBottom: '60px',
-          flexWrap: 'wrap',
+          gap: '12px',
+          justifyContent: 'center', // Center the buttons
+          marginBottom: '40px',
+          flexWrap: 'wrap', // Wrap them nicely
+          padding: '0 5%',
+          width: '100%',
           position: 'relative',
           zIndex: 1
         }}>
@@ -86,22 +86,23 @@ const PortfolioGallery = ({ items = [], onItemClick }) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{
-                padding: '12px 30px',
+                padding: '10px 20px', // Slightly smaller padding
                 background: activeCategory === category
                   ? 'var(--accent-primary)'
-                  : 'rgba(255,255,255,0.03)',
+                  : 'rgba(255,255,255,0.05)',
                 color: activeCategory === category
                   ? 'black'
                   : 'var(--text-primary)',
                 border: `1px solid ${activeCategory === category ? 'var(--accent-primary)' : 'var(--border-color)'}`,
                 borderRadius: '100px',
                 fontFamily: "'Inter', sans-serif",
-                fontSize: '0.9rem',
+                fontSize: '0.8rem', // Slightly smaller font
                 fontWeight: 600,
-                letterSpacing: '1px',
+                letterSpacing: '0.5px',
                 textTransform: 'uppercase',
                 cursor: 'pointer',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                flexShrink: 0
               }}
             >
               {category}
@@ -110,7 +111,7 @@ const PortfolioGallery = ({ items = [], onItemClick }) => {
         </div>
       )}
 
-      {/* Gallery Grid - Controlling max-width for better balance */}
+      {/* Gallery Grid */}
       <div
         className="grid-premium"
         style={{
@@ -142,33 +143,75 @@ const PortfolioGallery = ({ items = [], onItemClick }) => {
           position: 'relative',
           zIndex: 1
         }}>
-          <p style={{ fontSize: '1.2rem', fontFamily: "'Inter', sans-serif, sans-serif" }}>
+          <p style={{ fontSize: '1.2rem', fontFamily: "'Inter', sans-serif" }}>
             No items in this category yet.
           </p>
         </div>
       )}
 
       <style>{`
-        @media (max-width: 1024px) {
-          #portfolio {
-            padding: 100px 120px 100px 5% !important;
-          }
-        }
-
         @media (max-width: 768px) {
           #portfolio {
-            padding: 80px 5% !important;
+            display: none !important;
           }
           .grid-premium {
-            grid-template-columns: 1fr !important;
-            gap: 1.5rem !important;
+            grid-template-columns: repeat(2, 1fr) !important; /* 2 Columns */
+            gap: 10px !important;
+          }
+          /* Ensure title is centered on mobile */
+          .section-title-premium {
+             font-size: 2.2rem !important; 
+             display: flex !important;
+             flex-direction: column !important;
+             align-items: center !important;
+             text-align: center !important;
+             width: 100% !important;
+             margin-bottom: 20px !important;
+          }
+          /* Adjust filter container for mobile - HIDDEN as requested */
+          .filter-container {
+             display: none !important;
           }
         }
 
         @media (max-width: 480px) {
           #portfolio {
-            padding: 60px 20px !important;
+            padding: 20px 10px !important;
           }
+        }
+        
+        .portfolio-card-container {
+             height: 500px;
+        }
+        .portfolio-card-title {
+             fontSize: 2rem;
+        }
+
+        @media (max-width: 768px) {
+             .portfolio-card-container {
+                  height: 250px !important; /* Adjusted slightly */
+             }
+             .portfolio-card-title {
+                  font-size: 1.2rem !important; /* Smaller font for mobile grid */
+             }
+             /* Adjust padding inside card for mobile */
+             div[style*="padding: 30px"] {
+                padding: 15px !important;
+             }
+             /* Hide description on very small screens if needed, or truncate */
+             p {
+                font-size: 0.8rem !important;
+                line-height: 1.4 !important;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+             }
+             /* Smaller button */
+             button {
+                padding: 8px 16px !important;
+                font-size: 0.8rem !important;
+             }
         }
       `}</style>
     </section>
@@ -179,24 +222,21 @@ const PortfolioCard = ({ item, index, onClick }) => {
   return (
     <motion.div
       layoutId={`portfolio-card-${item.id || index}`}
-      initial="initial"
-      whileInView="visible"
+      initial="visible" // Force visible state to prevent invisibility issues
       whileHover="hover"
       viewport={{ once: true }}
       variants={{
-        initial: { opacity: 0, y: 30, borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' },
-        visible: { opacity: 1, y: 0, transition: { delay: index * 0.1 } },
+        visible: { opacity: 1, y: 0 },
         hover: {
-          y: -10,
+          y: -5, // Reduced movement
           borderColor: 'var(--accent-primary)',
-          boxShadow: '0 20px 50px rgba(217, 70, 239, 0.15)'
+          boxShadow: '0 10px 30px rgba(217, 70, 239, 0.15)'
         }
       }}
       onClick={onClick}
-      className="ad-card"
+      className="ad-card portfolio-card-container"
       style={{
         position: 'relative',
-        height: '500px', // Taller for more impact
         borderRadius: '24px',
         overflow: 'hidden',
         cursor: 'pointer',
@@ -282,12 +322,14 @@ const PortfolioCard = ({ item, index, onClick }) => {
         }}
       >
         <motion.h3
+          className="portfolio-card-title"
           style={{
-            fontSize: '2rem',
-            fontFamily: "'Abril Fatface', serif",
+            fontFamily: "'Inter', sans-serif",
+            fontWeight: 800,
             color: 'white',
-            lineHeight: 1.05,
+            lineHeight: 1.2,
             textShadow: '0 2px 10px rgba(0,0,0,0.8)'
+            // fontSize handled by class
           }}
         >
           {item.title}

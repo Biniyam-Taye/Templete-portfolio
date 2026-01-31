@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Linkedin, Github, Send, MapPin, Phone, Instagram, Twitter, Youtube, Facebook, ExternalLink, Music, MessageCircle } from 'lucide-react';
+import { Mail, Linkedin, Github, Send, MapPin, Phone, Instagram, Twitter, Youtube, Facebook, ExternalLink, Music, MessageCircle, ArrowUp, ArrowRight } from 'lucide-react';
 import { useCollection } from '../hooks/useCollection';
 
 const ContactSection = () => {
@@ -25,7 +25,7 @@ const ContactSection = () => {
 
     const TikTokIcon = () => (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.6-4.12-1.3-.76-.41-1.42-.92-1.98-1.57-.02 1.35-.01 2.69-.01 4.04 0 3.01-.45 6.44-3.11 8.35-2.09 1.48-5.07 1.71-7.19.46-2.5-1.42-3.66-4.59-2.73-7.22.65-1.89 2.45-3.37 4.45-3.51V10c-2.02.13-3.83 1.53-4.38 3.47-.64 2.21.36 4.88 2.45 6.01 1.63.9 3.86.84 5.23-.42 1.25-1.07 1.62-2.92 1.5-4.51V.02h-.04Z"/>
+            <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.6-4.12-1.3-.76-.41-1.42-.92-1.98-1.57-.02 1.35-.01 2.69-.01 4.04 0 3.01-.45 6.44-3.11 8.35-2.09 1.48-5.07 1.71-7.19.46-2.5-1.42-3.66-4.59-2.73-7.22.65-1.89 2.45-3.37 4.45-3.51V10c-2.02.13-3.83 1.53-4.38 3.47-.64 2.21.36 4.88 2.45 6.01 1.63.9 3.86.84 5.23-.42 1.25-1.07 1.62-2.92 1.5-4.51V.02h-.04Z" />
         </svg>
     );
 
@@ -48,19 +48,19 @@ const ContactSection = () => {
         const name = formData.get('name');
         const email = formData.get('email');
         const message = formData.get('message');
-        
+
         const subject = `Portfolio Inquiry from ${name}`;
         const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
-        
+
         window.location.href = `mailto:${dynamicContact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         setStatus('Message prepared in your email client!');
     };
 
     if (loading) return null;
 
-    const contactItemStyle = { 
-        display: 'flex', 
-        alignItems: 'center', 
+    const contactItemStyle = {
+        display: 'flex',
+        alignItems: 'center',
         gap: '24px',
         padding: '12px',
         borderRadius: '20px',
@@ -68,10 +68,10 @@ const ContactSection = () => {
         cursor: 'default'
     };
 
-    const iconBoxStyle = { 
-        width: '56px', 
-        height: '56px', 
-        borderRadius: '16px', 
+    const iconBoxStyle = {
+        width: '56px',
+        height: '56px',
+        borderRadius: '16px',
         background: 'rgba(255, 107, 0, 0.05)',
         border: '1px solid rgba(255, 107, 0, 0.1)',
         display: 'flex',
@@ -81,20 +81,20 @@ const ContactSection = () => {
         flexShrink: 0
     };
 
-    const labelStyle = { 
-        fontSize: '0.7rem', 
-        color: 'var(--text-secondary)', 
-        letterSpacing: '2px', 
-        textTransform: 'uppercase', 
+    const labelStyle = {
+        fontSize: '0.7rem',
+        color: 'var(--text-secondary)',
+        letterSpacing: '2px',
+        textTransform: 'uppercase',
         marginBottom: '6px',
         fontWeight: 600,
         fontFamily: "'Inter', sans-serif, sans-serif",
         opacity: 0.6
     };
 
-    const infoStyle = { 
-        fontSize: '1.2rem', 
-        color: 'var(--text-primary)', 
+    const infoStyle = {
+        fontSize: '1.2rem',
+        color: 'var(--text-primary)',
         fontWeight: 400, // Natural weight
         letterSpacing: '0.5px',
         wordBreak: 'break-all',
@@ -102,8 +102,8 @@ const ContactSection = () => {
     };
 
     return (
-        <section id="contact" style={{ 
-            padding: '120px 10%', 
+        <section id="contact" style={{
+            padding: '120px 10%',
             background: 'var(--bg-color)',
             position: 'relative',
             overflow: 'hidden',
@@ -124,14 +124,14 @@ const ContactSection = () => {
             <div className="section-header-premium" style={{ marginBottom: '80px', textAlign: 'left', pointerEvents: 'none' }}>
 
                 <h2 className="section-title-premium" style={{ justifyContent: 'flex-start' }}>
-                    <span className="section-title-accent">HAVE A</span> 
-                    <span className="section-title-stroke">CONCEPT?</span>
+                    <span className="section-title-accent">HAVE A</span>
+                    <span className="section-title-stroke">PROJECT?</span>
                 </h2>
             </div>
 
-            <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'minmax(300px, 1fr) 1.5fr', 
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'minmax(300px, 1fr) 1.5fr',
                 gap: '80px',
                 zIndex: 1,
                 position: 'relative'
@@ -143,9 +143,9 @@ const ContactSection = () => {
                     transition={{ duration: 1 }}
                     viewport={{ once: true }}
                 >
-                    <p style={{ 
-                        fontSize: '1.2rem', 
-                        color: 'var(--text-secondary)', 
+                    <p style={{
+                        fontSize: '1.2rem',
+                        color: 'var(--text-secondary)',
                         lineHeight: 1.8,
                         marginBottom: '60px',
                         maxWidth: '400px',
@@ -184,7 +184,7 @@ const ContactSection = () => {
                     {/* Social Hub */}
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', marginTop: '60px', paddingLeft: '12px' }}>
                         {socials.map((social, i) => (
-                            <motion.a 
+                            <motion.a
                                 key={i}
                                 href={social.link}
                                 target="_blank"
@@ -230,8 +230,8 @@ const ContactSection = () => {
                     <form onSubmit={handleEmailTransmit} className="contact-form" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
                         <div style={{ gridColumn: 'span 1' }}>
                             <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', fontFamily: "'Inter', sans-serif, sans-serif", fontWeight: 600 }}>Your Name</label>
-                            <input 
-                                type="text" 
+                            <input
+                                type="text"
                                 name="name"
                                 placeholder="ALEX MERCER"
                                 required
@@ -250,8 +250,8 @@ const ContactSection = () => {
                         </div>
                         <div style={{ gridColumn: 'span 1' }}>
                             <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', fontFamily: "'Inter', sans-serif, sans-serif", fontWeight: 600 }}>Email Address</label>
-                            <input 
-                                type="email" 
+                            <input
+                                type="email"
                                 name="email"
                                 placeholder="ALEX@EXAMPLE.COM"
                                 required
@@ -270,7 +270,7 @@ const ContactSection = () => {
                         </div>
                         <div style={{ gridColumn: 'span 2' }}>
                             <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', fontFamily: "'Inter', sans-serif, sans-serif", fontWeight: 600 }}>Your Message</label>
-                            <textarea 
+                            <textarea
                                 name="message"
                                 rows="6"
                                 placeholder="TELL ME ABOUT YOUR VISION"
@@ -290,7 +290,7 @@ const ContactSection = () => {
                             ></textarea>
                         </div>
                         <div style={{ gridColumn: 'span 2' }}>
-                            <motion.button 
+                            <motion.button
                                 type="submit"
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
@@ -321,68 +321,202 @@ const ContactSection = () => {
                 </motion.div>
             </div>
 
-            <div style={{ 
-                marginTop: '100px', 
-                borderTop: '1px solid var(--border-color)',
-                paddingTop: '60px',
-                paddingBottom: '20px'
+            {/* PREMIUM FOOTER REDESIGN */}
+            <div style={{
+                marginTop: '160px',
+                borderTop: '1px solid rgba(255,255,255,0.1)',
+                paddingTop: '0',
+                paddingBottom: '40px',
+                position: 'relative'
             }}>
+                {/* Centered Back to Top Button sitting ON the border */}
                 <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-start',
-                    flexWrap: 'wrap',
-                    gap: '40px',
-                    marginBottom: '40px'
+                    position: 'absolute',
+                    top: '0',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    background: 'var(--bg-color)',
+                    padding: '0 20px',
+                    zIndex: 10
                 }}>
-                    {/* Brand & Identity */}
-                    <div style={{ maxWidth: '300px' }}>
-                        <h4 style={{ 
-                            fontSize: '1.5rem', 
-                            fontFamily: "'Abril Fatface', serif", 
-                            color: 'var(--text-primary)', 
-                            letterSpacing: '1px', 
-                            textTransform: 'uppercase', 
-                            margin: '0 0 15px 0' 
+                    <motion.button
+                        whileHover={{ scale: 1.1, boxShadow: '0 0 30px var(--accent-primary)44' }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        style={{
+                            width: '60px',
+                            height: '60px',
+                            borderRadius: '50%',
+                            background: 'var(--card-bg)',
+                            border: '1px solid var(--accent-primary)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            color: 'var(--accent-primary)',
+                            boxShadow: '0 0 15px rgba(0,0,0,0.2)'
+                        }}
+                    >
+                        <ArrowUp size={24} />
+                    </motion.button>
+                </div>
+
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                    gap: '60px',
+                    paddingTop: '100px',
+                    maxWidth: '1400px',
+                    margin: '0 auto'
+                }}>
+                    {/* Brand Identity Column */}
+                    <div>
+                        <h2 style={{
+                            fontSize: '4rem',
+                            fontFamily: "'Abril Fatface', serif",
+                            color: 'white',
+                            lineHeight: 0.9,
+                            marginBottom: '30px'
                         }}>
-                            Sarah Jenkins
-                        </h4>
-                        <p style={{ 
-                            fontSize: '0.9rem', 
-                            color: 'var(--text-secondary)', 
-                            fontFamily: "'Inter', sans-serif, sans-serif", 
-                            lineHeight: 1.6,
-                            opacity: 0.7
+                            SARAH<br />
+                            <span style={{
+                                color: 'transparent',
+                                WebkitTextStroke: '1px var(--accent-primary)',
+                                opacity: 0.8
+                            }}>JENKINS</span>
+                        </h2>
+                        <p style={{
+                            color: 'var(--text-secondary)',
+                            fontSize: '1rem',
+                            lineHeight: 1.7,
+                            maxWidth: '350px',
+                            fontFamily: "'Inter', sans-serif"
                         }}>
-                            Crafting advanced digital experiences with industrial precision and creative logic.
+                            Building digital legacies. merging technical mastery with artistic intuition to create web experiences that feel alive.
                         </p>
                     </div>
 
+                    {/* Navigation Column - Redesigned as SITE MAP */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h4 style={{ color: 'var(--accent-secondary)', fontFamily: "'Cinzel', serif", letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '25px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <span style={{ width: '8px', height: '8px', background: 'var(--accent-secondary)' }}></span>
+                            SITE MAP
+                        </h4>
 
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+                            {['Work', 'About', 'Services', 'Philosophy'].map((item, idx) => (
+                                <a key={item} href={`#${item.toLowerCase()}`}
+                                    className="nav-row"
+                                    style={{
+                                        textDecoration: 'none',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        padding: '15px 0',
+                                        borderBottom: '1px solid rgba(255,255,255,0.05)',
+                                        group: 'group'
+                                    }}>
+                                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '15px' }}>
+                                        <span style={{
+                                            fontFamily: "'JetBrains Mono', monospace",
+                                            color: 'var(--accent-primary)',
+                                            fontSize: '0.8rem',
+                                            opacity: 0.7
+                                        }}>0{idx + 1}</span>
+                                        <span className="nav-text" style={{
+                                            fontSize: '1.2rem',
+                                            fontFamily: "'Inter', sans-serif",
+                                            color: 'white',
+                                            fontWeight: 500,
+                                            transition: 'transform 0.3s ease'
+                                        }}>{item}</span>
+                                    </div>
+                                    <div className="nav-arrow" style={{ opacity: 0, transform: 'translateX(-10px)', transition: 'all 0.3s ease' }}>
+                                        <ArrowRight size={18} color="var(--accent-primary)" />
+                                    </div>
+                                </a>
+                            ))}
+                        </div>
+                        <style>{`
+                            .nav-row:hover .nav-text {
+                                transform: translateX(10px);
+                                color: var(--accent-primary) !important;
+                            }
+                            .nav-row:hover .nav-arrow {
+                                opacity: 1 !important;
+                                transform: translateX(0) !important;
+                            }
+                        `}</style>
+                    </div>
+
+                    {/* Status & Info Column */}
+                    <div>
+                        <h4 style={{ color: 'var(--accent-secondary)', fontFamily: "'Cinzel', serif", letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '20px' }}>STATUS</h4>
+
+                        <div style={{
+                            padding: '25px',
+                            background: 'rgba(255,255,255,0.03)',
+                            borderRadius: '20px',
+                            border: '1px solid rgba(255,255,255,0.05)',
+                            backdropFilter: 'blur(5px)',
+                            marginBottom: '30px'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
+                                <span style={{ position: 'relative', display: 'flex', height: '12px', width: '12px' }}>
+                                    <span style={{ position: 'absolute', display: 'inline-flex', height: '100%', width: '100%', borderRadius: '50%', background: '#4ade80', opacity: 0.75, animation: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite' }}></span>
+                                    <span style={{ position: 'relative', display: 'inline-flex', borderRadius: '50%', height: '12px', width: '12px', background: '#4ade80' }}></span>
+                                </span>
+                                <span style={{ color: 'white', fontWeight: 600, fontFamily: "'Inter', sans-serif" }}>ACCEPTING PROJECTS</span>
+                            </div>
+                            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0 }}>
+                                Currently open for new collaborations starting March 2026.
+                            </p>
+                        </div>
+
+                        <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontFamily: "'Inter', sans-serif" }}>
+                            <div style={{ marginBottom: '5px' }}>London, UK • 11:42 AM GMT</div>
+                            <a href="mailto:hello@sarah.design" style={{ color: 'var(--accent-primary)', textDecoration: 'none', borderBottom: '1px solid var(--accent-primary)' }}>hello@sarah.design</a>
+                        </div>
+                    </div>
                 </div>
 
-                {/* Footer Bottom Bar */}
+                {/* Bottom Copyright Bar */}
                 <div style={{
+                    marginTop: '80px',
+                    paddingTop: '30px',
+                    borderTop: '1px solid rgba(255,255,255,0.05)',
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    paddingTop: '30px',
-                    borderTop: '1px solid rgba(255,255,255,0.05)',
-                    fontSize: '0.75rem',
-                    color: 'var(--text-secondary)',
-                    letterSpacing: '1px',
                     flexWrap: 'wrap',
                     gap: '20px',
-                    fontFamily: "'Inter', sans-serif, sans-serif",
-                    opacity: 0.6
+                    fontSize: '0.8rem',
+                    color: 'rgba(255,255,255,0.4)',
+                    fontFamily: "'JetBrains Mono', monospace",
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px'
                 }}>
-                    <div>
-                        © {new Date().getFullYear()} SARAH JENKINS • CREATIVE DIRECTOR
-                    </div>
-                    <div style={{ display: 'flex', gap: '20px' }}>
-                        <span>DESIGNED BY SARAH JENKINS</span>
+                    <div>© 2026 Sarah Jenkins. All rights reserved.</div>
+                    <div style={{ display: 'flex', gap: '30px' }}>
+                        <span>Privacy Policy</span>
+                        <span>Terms of Use</span>
+                        <span>Sitemap</span>
                     </div>
                 </div>
+
+                <style>{`
+                    @keyframes ping {
+                        75%, 100% {
+                            transform: scale(2);
+                            opacity: 0;
+                        }
+                    }
+                    @media (max-width: 768px) {
+                        .footer-link {
+                            font-size: 1.2rem !important;
+                        }
+                    }
+                `}</style>
             </div>
 
             <style>{`

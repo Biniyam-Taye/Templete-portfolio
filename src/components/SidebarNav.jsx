@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Home, User, Layout, Star, Plane, Trophy, Map, Book, Mail, Sun, Moon,
-  Menu, X
+  Menu, X, PenTool
 } from 'lucide-react';
 import { useCollection } from '../hooks/useCollection';
 
@@ -13,7 +13,8 @@ const navItems = [
   { id: 'skills', label: 'Expertise', icon: <Star size={22} />, href: '#skills' },
   { id: 'journey', label: 'Journey', icon: <Plane size={22} />, href: '#journey' },
   { id: 'achievements', label: 'Achievements', icon: <Trophy size={22} />, href: '#achievements' },
-  { id: 'plan', label: 'Plan', icon: <Map size={22} />, href: '/plan' },
+  { id: 'life-os', label: 'Life OS', icon: <PenTool size={22} />, href: '#life-os' },
+  { id: 'plan', label: 'Plan', icon: <Layout size={22} />, href: '/plan' },
   { id: 'diary', label: 'Diary', icon: <Book size={22} />, href: '/diary' },
   { id: 'contact', label: 'Contact', icon: <Mail size={22} />, href: '#contact' },
 ];
@@ -80,7 +81,16 @@ const SidebarNav = () => {
             boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
           }}
         >
-          <span style={{ fontFamily: "'Abril Fatface', serif", fontSize: '1.8rem', fontWeight: 700, color: 'white', letterSpacing: '-1px' }}>SJ</span>
+          <img 
+            src="/favicon.png" 
+            alt="Dominique" 
+            style={{ 
+              width: '80%', 
+              height: '80%', 
+              objectFit: 'contain',
+              borderRadius: '8px' 
+            }} 
+          />
         </motion.div>
 
         {navItems.map((item) => (

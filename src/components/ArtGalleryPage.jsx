@@ -185,7 +185,7 @@ const ArtGalleryPage = () => {
                     letterSpacing: '1px',
                     opacity: 0.8
                 }}>
-                    B.J. ART
+                    D. ART
                 </div>
             </nav>
 

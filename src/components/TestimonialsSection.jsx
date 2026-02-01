@@ -6,7 +6,7 @@ import { useCollection } from '../hooks/useCollection';
 const staticTestimonials = [
   {
     id: 1,
-    name: "Sarah Chen",
+    name: "Dominique Chen",
     role: "Senior Product Manager",
     company: "Google",
     text: "Working with this developer was a game-changer for our project. Their ability to bridge the gap between complex backend logic and stunning UI is rare.",

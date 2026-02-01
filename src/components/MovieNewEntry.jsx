@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Save, Star, Film, Calendar, Tv, Image as ImageIcon, Upload } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
+import { movieApi } from '../utils/api';
+import { ArrowLeft, Save, Star, Film, Calendar, Tv, Image as ImageIcon, Upload, Loader2 } from 'lucide-react';
 
 const MovieNewEntry = () => {
     const navigate = useNavigate();
@@ -19,6 +20,7 @@ const MovieNewEntry = () => {
     const [review, setReview] = useState('');
     const [coverImage, setCoverImage] = useState(null);
     const [editId, setEditId] = useState(null);
+    const [isSaving, setIsSaving] = useState(false);
 
     // Initialize if editing
     useEffect(() => {
@@ -47,37 +49,37 @@ const MovieNewEntry = () => {
         }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!title.trim()) {
             alert('Please enter a movie title');
             return;
         }
 
-        const newEntry = {
-            id: editId || Date.now(),
-            title,
-            status,
-            rating,
-            genre,
-            platform,
-            watchDate,
-            review,
-            coverImage
-        };
+        setIsSaving(true);
+        try {
+            const entryData = {
+                title,
+                status,
+                rating,
+                genre,
+                platform,
+                watched: watchDate,
+                review,
+                coverImage
+            };
 
-        const existingEntries = JSON.parse(localStorage.getItem('movie_entries') || '[]');
-
-        if (editId) {
-            // Edit mode: Update existing
-            const updatedEntries = existingEntries.map(ent => ent.id === editId ? newEntry : ent);
-            localStorage.setItem('movie_entries', JSON.stringify(updatedEntries));
-        } else {
-            // Create mode: Add new
-            const updatedEntries = [newEntry, ...existingEntries];
-            localStorage.setItem('movie_entries', JSON.stringify(updatedEntries));
+            if (editId) {
+                await movieApi.update(editId, entryData);
+            } else {
+                await movieApi.create(entryData);
+            }
+            navigate('/movies');
+        } catch (err) {
+            console.error('Failed to save movie:', err);
+            alert('Failed to save movie');
+        } finally {
+            setIsSaving(false);
         }
-
-        navigate('/movies');
     };
 
     const statusColors = {
@@ -112,14 +114,17 @@ const MovieNewEntry = () => {
                     </button>
                     <button
                         onClick={handleSave}
+                        disabled={isSaving}
                         style={{
                             display: 'flex', alignItems: 'center', gap: '8px',
                             backgroundColor: '#fff', color: 'black', border: 'none',
                             padding: '8px 24px', borderRadius: '6px', fontSize: '14px',
-                            fontWeight: 600, cursor: 'pointer'
+                            fontWeight: 600, cursor: isSaving ? 'not-allowed' : 'pointer',
+                            opacity: isSaving ? 0.7 : 1
                         }}
                     >
-                        <Save size={16} /> {editId ? 'Update Movie' : 'Save Movie'}
+                        {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} 
+                        {isSaving ? 'Saving...' : editId ? 'Update Movie' : 'Save Movie'}
                     </button>
                 </div>
 

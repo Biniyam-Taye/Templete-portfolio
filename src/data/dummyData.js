@@ -4,19 +4,19 @@ export const dummyData = {
     {
       title: "DIGITAL ARTISAN",
       roles: "UI/UX DESIGNER, CREATIVE DIRECTOR, BRAND STRATEGIST, VISUAL STORYTELLER",
-      imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop",
+      imageUrl: "/dominique-hero.png",
       desc: "Crafting immersive digital experiences that blend aesthetic elegance with intuitive functionality. Specializing in user-centric design and brand identity evolution."
     }
   ],
   about: [
     {
       title: "About Me",
-      desc: "I am Sarah Jenkins, a multi-disciplinary designer with a passion for human-centered digital products. With over 8 years of experience in the creative industry, I have helped startups and Fortune 500 companies alike to find their unique visual voice. My work is driven by curiosity and the belief that good design makes life easier and more beautiful.",
-      imageUrl: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1000&auto=format&fit=crop",
+      desc: "I am Dominique, a multi-disciplinary designer with a passion for human-centered digital products. With over 8 years of experience in the creative industry, I have helped startups and Fortune 500 companies alike to find their unique visual voice. My work is driven by curiosity and the belief that good design makes life easier and more beautiful.",
+      imageUrl: "/dominique-1.png",
       stats: "8+ YEARS, 120+ PROJECTS, 15+ AWARDS",
       gallery: [
-        "https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=1000&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=1000&auto=format&fit=crop"
+        "/dominique-2.png",
+        
       ]
     }
   ],

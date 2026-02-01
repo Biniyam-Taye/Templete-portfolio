@@ -1,49 +1,66 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Trash2, RotateCcw, X, AlertCircle } from 'lucide-react';
+import { Trash2, RotateCcw, X, AlertCircle, Loader2 } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
 import HeroImageUploader from './HeroImageUploader';
+import { binApi } from '../utils/api';
 
 const Bin = () => {
     const [heroImage, setHeroImage] = useState(null);
     const [deletedItems, setDeletedItems] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Load deleted items from localStorage
-        const binItems = JSON.parse(localStorage.getItem('bin_items') || '[]');
-        setDeletedItems(binItems);
-
         const heroImages = JSON.parse(localStorage.getItem('hero_images') || '{}');
         if (heroImages.bin) {
             setHeroImage(heroImages.bin);
         }
+        fetchBinItems();
     }, []);
 
-    const handleRestore = (item) => {
-        // Restore item to its original collection
-        const sourceKey = `${item.source}_entries`;
-        const existingEntries = JSON.parse(localStorage.getItem(sourceKey) || '[]');
-        existingEntries.unshift(item.data);
-        localStorage.setItem(sourceKey, JSON.stringify(existingEntries));
-
-        // Remove from bin
-        const updatedBin = deletedItems.filter(binItem => binItem.id !== item.id);
-        setDeletedItems(updatedBin);
-        localStorage.setItem('bin_items', JSON.stringify(updatedBin));
-    };
-
-    const handlePermanentDelete = (item) => {
-        if (window.confirm('Are you sure you want to permanently delete this item? This cannot be undone.')) {
-            const updatedBin = deletedItems.filter(binItem => binItem.id !== item.id);
-            setDeletedItems(updatedBin);
-            localStorage.setItem('bin_items', JSON.stringify(updatedBin));
+    const fetchBinItems = async () => {
+        setIsLoading(true);
+        try {
+            const data = await binApi.getAll();
+            setDeletedItems(data || []);
+        } catch (err) {
+            console.error('Failed to fetch bin items:', err);
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    const handleEmptyBin = () => {
+    const handleRestore = async (item) => {
+        try {
+            await binApi.restore(item.id);
+            setDeletedItems(deletedItems.filter(i => i.id !== item.id));
+        } catch (err) {
+            console.error('Failed to restore item:', err);
+            alert('Failed to restore item');
+        }
+    };
+
+    const handlePermanentDelete = async (item) => {
+        if (window.confirm('Are you sure you want to permanently delete this item? This cannot be undone.')) {
+            try {
+                await binApi.delete(item.id);
+                setDeletedItems(deletedItems.filter(i => i.id !== item.id));
+            } catch (err) {
+                console.error('Failed to delete item:', err);
+                alert('Failed to delete item');
+            }
+        }
+    };
+
+    const handleEmptyBin = async () => {
         if (window.confirm('Are you sure you want to empty the entire bin? All items will be permanently deleted.')) {
-            setDeletedItems([]);
-            localStorage.setItem('bin_items', JSON.stringify([]));
+            try {
+                await binApi.empty();
+                setDeletedItems([]);
+            } catch (err) {
+                console.error('Failed to empty bin:', err);
+                alert('Failed to empty bin');
+            }
         }
     };
 
@@ -118,7 +135,11 @@ const Bin = () => {
                 </p>
             </div>
 
-            {deletedItems.length === 0 ? (
+            {isLoading ? (
+                <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
+                    <Loader2 className="animate-spin" size={48} color="#666" />
+                </div>
+            ) : deletedItems.length === 0 ? (
                 <div style={{
                     textAlign: 'center',
                     padding: '80px 20px',
@@ -241,6 +262,15 @@ const Bin = () => {
                     </div>
                 </>
             )}
+            <style>{`
+                @keyframes spin {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+                .animate-spin {
+                    animation: spin 1s linear infinite;
+                }
+            `}</style>
         </DashboardLayout>
     );
 };

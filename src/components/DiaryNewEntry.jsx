@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Save, Calendar, Tag, Smile, Image, Upload } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
+import { diaryApi } from '../utils/api';
 
 const DiaryNewEntry = () => {
     const navigate = useNavigate();
@@ -13,6 +14,7 @@ const DiaryNewEntry = () => {
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [coverImage, setCoverImage] = useState(null);
     const [editId, setEditId] = useState(null);
+    const [isSaving, setIsSaving] = useState(false);
     const fileInputRef = useRef(null);
 
     useEffect(() => {
@@ -38,14 +40,14 @@ const DiaryNewEntry = () => {
         }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!title.trim()) {
             alert('Please enter a title');
             return;
         }
 
-        const newEntry = {
-            id: editId || Date.now(),
+        setIsSaving(true);
+        const entryData = {
             title,
             content: content.split('\n').filter(line => line.trim() !== ''),
             tags: tags.split(',').map(t => t.trim()).filter(Boolean),
@@ -55,20 +57,21 @@ const DiaryNewEntry = () => {
             coverImage
         };
 
-        const existingEntries = JSON.parse(localStorage.getItem('diary_entries') || '[]');
-
-        if (editId) {
-            // Edit mode: Update existing entry
-            const updatedEntries = existingEntries.map(ent => ent.id === editId ? newEntry : ent);
-            localStorage.setItem('diary_entries', JSON.stringify(updatedEntries));
-        } else {
-            // Create mode: Add new entry to the beginning
-            const updatedEntries = [newEntry, ...existingEntries];
-            localStorage.setItem('diary_entries', JSON.stringify(updatedEntries));
+        try {
+            if (editId) {
+                await diaryApi.update(editId, entryData);
+            } else {
+                await diaryApi.create(entryData);
+            }
+            navigate('/diary');
+        } catch (err) {
+            console.error('Failed to save entry:', err);
+            alert('Failed to save entry');
+        } finally {
+            setIsSaving(false);
         }
-
-        navigate('/diary');
     };
+
 
     return (
         <DashboardLayout>
@@ -99,14 +102,16 @@ const DiaryNewEntry = () => {
 
                     <button
                         onClick={handleSave}
+                        disabled={isSaving}
                         style={{
                             display: 'flex', alignItems: 'center', gap: '8px',
                             backgroundColor: '#fff', color: 'black', border: 'none',
                             padding: '8px 24px', borderRadius: '6px', fontSize: '14px',
-                            fontWeight: 600, cursor: 'pointer'
+                            fontWeight: 600, cursor: 'pointer',
+                            opacity: isSaving ? 0.7 : 1
                         }}
                     >
-                        <Save size={16} /> Save Entry
+                        <Save size={16} /> {isSaving ? 'Saving...' : 'Save Entry'}
                     </button>
                 </div>
 
@@ -185,7 +190,7 @@ const DiaryNewEntry = () => {
                                 fontSize: '14px',
                                 outline: 'none',
                                 fontFamily: 'inherit',
-                                colorScheme: 'dark', // Ensures picker is dark mode
+                                colorScheme: 'dark',
                                 cursor: 'pointer'
                             }}
                         />

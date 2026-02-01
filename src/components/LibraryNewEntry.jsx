@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Save, BookOpen, User, Calendar, Star, Tag, FileText, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Save, BookOpen, User, Calendar, Star, Tag, FileText, Image as ImageIcon, Loader2 } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
+import { libraryApi } from '../utils/api';
 
 const LibraryNewEntry = () => {
     const navigate = useNavigate();
@@ -21,6 +22,7 @@ const LibraryNewEntry = () => {
     const [coverImage, setCoverImage] = useState(null);
     const [notes, setNotes] = useState('');
     const [editId, setEditId] = useState(null);
+    const [isSaving, setIsSaving] = useState(false);
 
     // Initialize if editing
     useEffect(() => {
@@ -51,37 +53,40 @@ const LibraryNewEntry = () => {
         }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!title.trim()) {
             alert('Please enter a book title');
             return;
         }
 
-        const newEntry = {
-            id: editId || Date.now(),
-            title,
-            author,
-            status,
-            rating: parseInt(rating) || 0,
-            category,
-            dateAdded,
-            dateFinished,
-            tags: tags.split(',').map(t => t.trim()).filter(Boolean),
-            coverImage,
-            notes
-        };
+        setIsSaving(true);
+        try {
+            const entryData = {
+                title,
+                author,
+                status,
+                rating: parseInt(rating) || 0,
+                category,
+                dateAdded,
+                dateFinished,
+                tags: tags.split(',').map(t => t.trim()).filter(Boolean),
+                coverImage,
+                notes,
+                type: category // Backend uses 'type' for categorization
+            };
 
-        const existingEntries = JSON.parse(localStorage.getItem('library_entries') || '[]');
-
-        if (editId) {
-            const updatedEntries = existingEntries.map(ent => ent.id === editId ? newEntry : ent);
-            localStorage.setItem('library_entries', JSON.stringify(updatedEntries));
-        } else {
-            const updatedEntries = [newEntry, ...existingEntries];
-            localStorage.setItem('library_entries', JSON.stringify(updatedEntries));
+            if (editId) {
+                await libraryApi.update(editId, entryData);
+            } else {
+                await libraryApi.create(entryData);
+            }
+            navigate('/library');
+        } catch (err) {
+            console.error('Failed to save book:', err);
+            alert('Failed to save book');
+        } finally {
+            setIsSaving(false);
         }
-
-        navigate('/library');
     };
 
     const statusColors = {
@@ -117,14 +122,17 @@ const LibraryNewEntry = () => {
                     </button>
                     <button
                         onClick={handleSave}
+                        disabled={isSaving}
                         style={{
                             display: 'flex', alignItems: 'center', gap: '8px',
                             backgroundColor: '#fff', color: 'black', border: 'none',
                             padding: '8px 24px', borderRadius: '6px', fontSize: '14px',
-                            fontWeight: 600, cursor: 'pointer'
+                            fontWeight: 600, cursor: isSaving ? 'not-allowed' : 'pointer',
+                            opacity: isSaving ? 0.7 : 1
                         }}
                     >
-                        <Save size={16} /> {editId ? 'Update Book' : 'Save Book'}
+                        {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} 
+                        {isSaving ? 'Saving...' : editId ? 'Update Book' : 'Save Book'}
                     </button>
                 </div>
 

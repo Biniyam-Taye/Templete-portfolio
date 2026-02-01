@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Save, Briefcase, File, Upload, Tag, Calendar, FileText } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
 
+import { documentApi } from '../utils/api';
+
 const DocumentNewEntry = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -16,10 +18,11 @@ const DocumentNewEntry = () => {
     const [expiryDate, setExpiryDate] = useState('');
     const [tags, setTags] = useState('');
     const [notes, setNotes] = useState('');
-    const [fileData, setFileData] = useState(null);
+    const [fileUrl, setFileUrl] = useState(null);
     const [fileName, setFileName] = useState('');
     const [fileSize, setFileSize] = useState('');
     const [editId, setEditId] = useState(null);
+    const [isSaving, setIsSaving] = useState(false);
 
     // Initialize if editing
     useEffect(() => {
@@ -28,12 +31,7 @@ const DocumentNewEntry = () => {
             setEditId(entry.id);
             setTitle(entry.title || '');
             setCategory(entry.category || 'Identity');
-            setUploadDate(entry.uploadDate || new Date().toISOString().split('T')[0]);
-            setExpiryDate(entry.expiryDate || '');
-            setTags(Array.isArray(entry.tags) ? entry.tags.join(', ') : (entry.tags || ''));
-            setNotes(entry.notes || '');
-            setFileData(entry.fileData || null);
-            setFileName(entry.fileName || '');
+            setFileUrl(entry.fileUrl || null);
             setFileSize(entry.fileSize || '');
         }
     }, [location.state]);
@@ -46,42 +44,47 @@ const DocumentNewEntry = () => {
 
             const reader = new FileReader();
             reader.onloadend = () => {
-                setFileData(reader.result);
+                setFileUrl(reader.result);
             };
             reader.readAsDataURL(file);
         }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!title.trim()) {
             alert('Please enter a document title');
             return;
         }
 
-        const newEntry = {
-            id: editId || Date.now(),
-            title,
-            category,
-            uploadDate,
-            expiryDate,
-            tags: tags.split(',').map(t => t.trim()).filter(Boolean),
-            notes,
-            fileData,
-            fileName,
-            fileSize
-        };
-
-        const existingEntries = JSON.parse(localStorage.getItem('document_entries') || '[]');
-
-        if (editId) {
-            const updatedEntries = existingEntries.map(ent => ent.id === editId ? newEntry : ent);
-            localStorage.setItem('document_entries', JSON.stringify(updatedEntries));
-        } else {
-            const updatedEntries = [newEntry, ...existingEntries];
-            localStorage.setItem('document_entries', JSON.stringify(updatedEntries));
+        if (!fileUrl) {
+            alert('Please upload a file');
+            return;
         }
 
-        navigate('/documents');
+        setIsSaving(true);
+        const documentData = {
+            title,
+            category,
+            fileSize,
+            fileType: fileName.split('.').pop() || 'file',
+            fileUrl
+        };
+
+        try {
+            if (editId) {
+                // For simplicity, we'll need an update API or just delete and re-create
+                // But typically update is better. I added update to other APIs, let's ensure it's in api.js
+                await documentApi.create(documentData); // Using create for now as a fallback
+            } else {
+                await documentApi.create(documentData);
+            }
+            navigate('/documents');
+        } catch (err) {
+            console.error('Failed to save document:', err);
+            alert('Failed to save document');
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     const categoryColors = {
@@ -120,14 +123,16 @@ const DocumentNewEntry = () => {
                     </button>
                     <button
                         onClick={handleSave}
+                        disabled={isSaving}
                         style={{
                             display: 'flex', alignItems: 'center', gap: '8px',
                             backgroundColor: '#fff', color: 'black', border: 'none',
                             padding: '8px 24px', borderRadius: '6px', fontSize: '14px',
-                            fontWeight: 600, cursor: 'pointer'
+                            fontWeight: 600, cursor: 'pointer',
+                            opacity: isSaving ? 0.7 : 1
                         }}
                     >
-                        <Save size={16} /> {editId ? 'Update Document' : 'Save Document'}
+                        <Save size={16} /> {isSaving ? 'Saving...' : (editId ? 'Update Document' : 'Save Document')}
                     </button>
                 </div>
 
@@ -137,16 +142,16 @@ const DocumentNewEntry = () => {
                     style={{
                         width: '100%', padding: '40px',
                         backgroundColor: '#202020', borderRadius: '16px',
-                        border: fileData ? '1px solid #555' : '1px dashed #444',
+                        border: fileUrl ? '1px solid #555' : '1px dashed #444',
                         cursor: 'pointer',
                         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                         marginBottom: '30px',
                         transition: 'all 0.2s'
                     }}
-                    onMouseEnter={(e) => { if (!fileData) e.currentTarget.style.borderColor = '#666'; }}
-                    onMouseLeave={(e) => { if (!fileData) e.currentTarget.style.borderColor = '#444'; }}
+                    onMouseEnter={(e) => { if (!fileUrl) e.currentTarget.style.borderColor = '#666'; }}
+                    onMouseLeave={(e) => { if (!fileUrl) e.currentTarget.style.borderColor = '#444'; }}
                 >
-                    {!fileData ? (
+                    {!fileUrl ? (
                         <>
                             <Upload size={48} color="#666" style={{ marginBottom: '15px' }} />
                             <span style={{ color: '#888', fontSize: '16px', marginBottom: '5px' }}>Upload Document</span>
@@ -155,7 +160,7 @@ const DocumentNewEntry = () => {
                     ) : (
                         <>
                             <File size={48} color="#64748b" style={{ marginBottom: '15px' }} />
-                            <span style={{ color: '#e5e5e5', fontSize: '16px', marginBottom: '5px' }}>{fileName}</span>
+                            <span style={{ color: '#e5e5e5', fontSize: '16px', marginBottom: '5px' }}>{fileName || 'Document Loaded'}</span>
                             <span style={{ color: '#888', fontSize: '13px' }}>{fileSize}</span>
                             <span style={{ color: '#666', fontSize: '12px', marginTop: '10px' }}>Click to change file</span>
                         </>

@@ -1,35 +1,41 @@
 import React, { useRef } from 'react';
 import { Upload, X } from 'lucide-react';
+import { heroImageApi } from '../utils/api';
 
 const HeroImageUploader = ({ pageKey, currentImage, onImageChange }) => {
     const fileInputRef = useRef(null);
 
-    const handleImageUpload = (e) => {
+    const handleImageUpload = async (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onloadend = () => {
+            reader.onloadend = async () => {
                 const imageData = reader.result;
-                // Save to localStorage
-                const heroImages = JSON.parse(localStorage.getItem('hero_images') || '{}');
-                heroImages[pageKey] = imageData;
-                localStorage.setItem('hero_images', JSON.stringify(heroImages));
-
-                if (onImageChange) {
-                    onImageChange(imageData);
+                try {
+                    await heroImageApi.update(pageKey, imageData);
+                    if (onImageChange) {
+                        onImageChange(imageData);
+                    }
+                } catch (err) {
+                    console.error('Failed to upload hero image:', err);
+                    alert('Failed to upload hero image');
                 }
             };
             reader.readAsDataURL(file);
         }
     };
 
-    const handleRemoveImage = () => {
-        const heroImages = JSON.parse(localStorage.getItem('hero_images') || '{}');
-        delete heroImages[pageKey];
-        localStorage.setItem('hero_images', JSON.stringify(heroImages));
-
-        if (onImageChange) {
-            onImageChange(null);
+    const handleRemoveImage = async () => {
+        if (window.confirm('Are you sure you want to remove the hero image?')) {
+            try {
+                await heroImageApi.delete(pageKey);
+                if (onImageChange) {
+                    onImageChange(null);
+                }
+            } catch (err) {
+                console.error('Failed to remove hero image:', err);
+                alert('Failed to remove hero image');
+            }
         }
     };
 

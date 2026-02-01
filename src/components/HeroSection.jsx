@@ -168,8 +168,7 @@ const HeroSection = () => {
             textShadow: '0 10px 30px rgba(0,0,0,0.3)',
             display: 'inline-block'
           }}>
-            Sarah<br/>
-            Jenkins
+            Dominique
           </h1>
         )}
 

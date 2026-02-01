@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Save, Map, MapPin, Calendar, Plane, DollarSign, Users, Image as ImageIcon, Upload, FileText } from 'lucide-react';
+import { ArrowLeft, Save, Map, MapPin, Calendar, Plane, DollarSign, Users, Image as ImageIcon, Upload, FileText, Loader2 } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
+import { travelApi } from '../utils/api';
 
 const TravelNewEntry = () => {
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ const TravelNewEntry = () => {
     const [coverImage, setCoverImage] = useState(null);
     const [notes, setNotes] = useState('');
     const [editId, setEditId] = useState(null);
+    const [isSaving, setIsSaving] = useState(false);
 
     // Initialize if editing
     useEffect(() => {
@@ -53,38 +55,41 @@ const TravelNewEntry = () => {
         }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!title.trim()) {
             alert('Please enter a trip title');
             return;
         }
 
-        const newEntry = {
-            id: editId || Date.now(),
-            title,
-            destination,
-            status,
-            startDate,
-            endDate,
-            budget,
-            travelers,
-            accommodation,
-            transportation,
-            coverImage,
-            notes
-        };
+        setIsSaving(true);
+        try {
+            const entryData = {
+                title,
+                destination,
+                status,
+                startDate,
+                endDate,
+                budget,
+                travelers,
+                accommodation,
+                transportation,
+                coverImage,
+                notes,
+                dates: startDate && endDate ? `${startDate} - ${endDate}` : (startDate || endDate || '')
+            };
 
-        const existingEntries = JSON.parse(localStorage.getItem('travel_entries') || '[]');
-
-        if (editId) {
-            const updatedEntries = existingEntries.map(ent => ent.id === editId ? newEntry : ent);
-            localStorage.setItem('travel_entries', JSON.stringify(updatedEntries));
-        } else {
-            const updatedEntries = [newEntry, ...existingEntries];
-            localStorage.setItem('travel_entries', JSON.stringify(updatedEntries));
+            if (editId) {
+                await travelApi.update(editId, entryData);
+            } else {
+                await travelApi.create(entryData);
+            }
+            navigate('/travel');
+        } catch (err) {
+            console.error('Failed to save trip:', err);
+            alert('Failed to save trip');
+        } finally {
+            setIsSaving(false);
         }
-
-        navigate('/travel');
     };
 
     const statusColors = {
@@ -120,14 +125,17 @@ const TravelNewEntry = () => {
                     </button>
                     <button
                         onClick={handleSave}
+                        disabled={isSaving}
                         style={{
                             display: 'flex', alignItems: 'center', gap: '8px',
                             backgroundColor: '#fff', color: 'black', border: 'none',
                             padding: '8px 24px', borderRadius: '6px', fontSize: '14px',
-                            fontWeight: 600, cursor: 'pointer'
+                            fontWeight: 600, cursor: isSaving ? 'not-allowed' : 'pointer',
+                            opacity: isSaving ? 0.7 : 1
                         }}
                     >
-                        <Save size={16} /> {editId ? 'Update Trip' : 'Save Trip'}
+                        {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} 
+                        {isSaving ? 'Saving...' : editId ? 'Update Trip' : 'Save Trip'}
                     </button>
                 </div>
 

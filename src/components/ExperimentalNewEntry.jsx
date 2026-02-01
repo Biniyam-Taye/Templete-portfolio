@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Save, Tag, Activity, FileText, GripVertical, Trash2, Type, List, CheckSquare, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Save, Tag, Activity, FileText, GripVertical, Trash2, Type, List, CheckSquare, ChevronRight, Loader2 } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
+import { experimentApi } from '../utils/api';
 
 const ExperimentalNewEntry = () => {
     const navigate = useNavigate();
@@ -13,6 +14,7 @@ const ExperimentalNewEntry = () => {
     const [status, setStatus] = useState('Planned');
     const [tags, setTags] = useState('');
     const [editId, setEditId] = useState(null);
+    const [isSaving, setIsSaving] = useState(false);
 
     // Block State for Rich Content
     const [blocks, setBlocks] = useState([{ id: Date.now().toString(), type: 'paragraph', content: '' }]);
@@ -37,33 +39,33 @@ const ExperimentalNewEntry = () => {
         }
     }, [location.state]);
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!title.trim()) {
             alert('Please enter a title');
             return;
         }
 
-        const newEntry = {
-            id: editId || Date.now(),
-            title,
-            status,
-            tags: tags.split(',').map(t => t.trim()).filter(Boolean),
-            notes: blocks // Save as block array
-        };
+        setIsSaving(true);
+        try {
+            const entryData = {
+                title,
+                status,
+                tags: tags.split(',').map(t => t.trim()).filter(Boolean),
+                notes: blocks // Save as block array
+            };
 
-        const existingEntries = JSON.parse(localStorage.getItem('experimental_entries') || '[]');
-
-        if (editId) {
-            // Edit mode: Update existing
-            const updatedEntries = existingEntries.map(ent => ent.id === editId ? newEntry : ent);
-            localStorage.setItem('experimental_entries', JSON.stringify(updatedEntries));
-        } else {
-            // Create mode: Add new
-            const updatedEntries = [newEntry, ...existingEntries];
-            localStorage.setItem('experimental_entries', JSON.stringify(updatedEntries));
+            if (editId) {
+                await experimentApi.update(editId, entryData);
+            } else {
+                await experimentApi.create(entryData);
+            }
+            navigate('/experimental-me');
+        } catch (err) {
+            console.error('Failed to save experiment:', err);
+            alert('Failed to save experiment');
+        } finally {
+            setIsSaving(false);
         }
-
-        navigate('/experimental-me');
     };
 
     // Block handlers
@@ -134,14 +136,17 @@ const ExperimentalNewEntry = () => {
 
                     <button
                         onClick={handleSave}
+                        disabled={isSaving}
                         style={{
                             display: 'flex', alignItems: 'center', gap: '8px',
                             backgroundColor: '#fff', color: 'black', border: 'none',
                             padding: '8px 24px', borderRadius: '6px', fontSize: '14px',
-                            fontWeight: 600, cursor: 'pointer'
+                            fontWeight: 600, cursor: isSaving ? 'not-allowed' : 'pointer',
+                            opacity: isSaving ? 0.7 : 1
                         }}
                     >
-                        <Save size={16} /> {editId ? 'Update Experiment' : 'Save Experiment'}
+                        {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} 
+                        {isSaving ? 'Saving...' : editId ? 'Update Experiment' : 'Save Experiment'}
                     </button>
                 </div>
 

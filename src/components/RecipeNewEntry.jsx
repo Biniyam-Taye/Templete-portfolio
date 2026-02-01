@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Save, Clock, ChefHat, Tag, Image as ImageIcon, Upload, GripVertical, Trash2, Type, List, CheckSquare, ChevronRight, FileText } from 'lucide-react';
+import { ArrowLeft, Save, Clock, ChefHat, Tag, Image as ImageIcon, Upload, GripVertical, Trash2, Type, List, CheckSquare, ChevronRight, FileText, Loader2 } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
+import { recipeApi } from '../utils/api';
 
 const RecipeNewEntry = () => {
     const navigate = useNavigate();
@@ -18,6 +19,7 @@ const RecipeNewEntry = () => {
     const [tags, setTags] = useState('');
     const [coverImage, setCoverImage] = useState(null);
     const [editId, setEditId] = useState(null);
+    const [isSaving, setIsSaving] = useState(false);
 
     // Ingredients as blocks
     const [ingredients, setIngredients] = useState([{ id: Date.now().toString(), content: '' }]);
@@ -65,36 +67,38 @@ const RecipeNewEntry = () => {
         }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!title.trim()) {
             alert('Please enter a recipe title');
             return;
         }
 
-        const newEntry = {
-            id: editId || Date.now(),
-            title,
-            difficulty,
-            prepTime,
-            cookTime,
-            servings,
-            tags: tags.split(',').map(t => t.trim()).filter(Boolean),
-            coverImage,
-            ingredients,
-            instructions
-        };
+        setIsSaving(true);
+        try {
+            const entryData = {
+                title,
+                difficulty,
+                prepTime,
+                cookTime,
+                servings,
+                tags: tags.split(',').map(t => t.trim()).filter(Boolean),
+                coverImage,
+                ingredients,
+                instructions
+            };
 
-        const existingEntries = JSON.parse(localStorage.getItem('recipe_entries') || '[]');
-
-        if (editId) {
-            const updatedEntries = existingEntries.map(ent => ent.id === editId ? newEntry : ent);
-            localStorage.setItem('recipe_entries', JSON.stringify(updatedEntries));
-        } else {
-            const updatedEntries = [newEntry, ...existingEntries];
-            localStorage.setItem('recipe_entries', JSON.stringify(updatedEntries));
+            if (editId) {
+                await recipeApi.update(editId, entryData);
+            } else {
+                await recipeApi.create(entryData);
+            }
+            navigate('/recipes');
+        } catch (err) {
+            console.error('Failed to save recipe:', err);
+            alert('Failed to save recipe');
+        } finally {
+            setIsSaving(false);
         }
-
-        navigate('/recipes');
     };
 
     // Ingredient handlers
@@ -183,16 +187,19 @@ const RecipeNewEntry = () => {
                     >
                         <ArrowLeft size={16} /> Cancel
                     </button>
-                    <button
+                     <button
                         onClick={handleSave}
+                        disabled={isSaving}
                         style={{
                             display: 'flex', alignItems: 'center', gap: '8px',
                             backgroundColor: '#fff', color: 'black', border: 'none',
                             padding: '8px 24px', borderRadius: '6px', fontSize: '14px',
-                            fontWeight: 600, cursor: 'pointer'
+                            fontWeight: 600, cursor: isSaving ? 'not-allowed' : 'pointer',
+                            opacity: isSaving ? 0.7 : 1
                         }}
                     >
-                        <Save size={16} /> {editId ? 'Update Recipe' : 'Save Recipe'}
+                        {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} 
+                        {isSaving ? 'Saving...' : editId ? 'Update Recipe' : 'Save Recipe'}
                     </button>
                 </div>
 

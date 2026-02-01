@@ -8,7 +8,7 @@ const ContactSection = () => {
     const [status, setStatus] = useState('');
 
     const dynamicContact = contactData?.[0] || {
-        email: "hello@sarah.design",
+        email: "hello@dominique.design",
         phone: "+1 234 567 890",
         location: "London, United Kingdom",
         github: "#",
@@ -378,12 +378,7 @@ const ContactSection = () => {
                             lineHeight: 0.9,
                             marginBottom: '30px'
                         }}>
-                            SARAH<br />
-                            <span style={{
-                                color: 'transparent',
-                                WebkitTextStroke: '1px var(--accent-primary)',
-                                opacity: 0.8
-                            }}>JENKINS</span>
+                            DOMINIQUE
                         </h2>
                         <p style={{
                             color: 'var(--text-secondary)',
@@ -475,7 +470,7 @@ const ContactSection = () => {
 
                         <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontFamily: "'Inter', sans-serif" }}>
                             <div style={{ marginBottom: '5px' }}>London, UK • 11:42 AM GMT</div>
-                            <a href="mailto:hello@sarah.design" style={{ color: 'var(--accent-primary)', textDecoration: 'none', borderBottom: '1px solid var(--accent-primary)' }}>hello@sarah.design</a>
+                            <a href="mailto:hello@dominique.design" style={{ color: 'var(--accent-primary)', textDecoration: 'none', borderBottom: '1px solid var(--accent-primary)' }}>hello@dominique.design</a>
                         </div>
                     </div>
                 </div>
@@ -496,7 +491,7 @@ const ContactSection = () => {
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                 }}>
-                    <div>© 2026 Sarah Jenkins. All rights reserved.</div>
+                    <div>© 2026 Dominique. All rights reserved.</div>
                     <div style={{ display: 'flex', gap: '30px' }}>
                         <span>Privacy Policy</span>
                         <span>Terms of Use</span>

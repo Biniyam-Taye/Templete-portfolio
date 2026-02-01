@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Save, Globe, BookOpen, Award, Link as LinkIcon, Calendar } from 'lucide-react';
+import { ArrowLeft, Save, Globe, BookOpen, Award, Link as LinkIcon, Calendar, Loader2 } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
+import { courseApi } from '../utils/api';
 
 const CourseNewEntry = () => {
     const navigate = useNavigate();
@@ -18,6 +19,7 @@ const CourseNewEntry = () => {
     const [url, setUrl] = useState('');
     const [notes, setNotes] = useState('');
     const [editId, setEditId] = useState(null);
+    const [isSaving, setIsSaving] = useState(false);
 
     // Initialize if editing
     useEffect(() => {
@@ -30,40 +32,42 @@ const CourseNewEntry = () => {
             setProgress(entry.progress || 0);
             setStatus(entry.status || 'In Progress');
             setStartDate(entry.startDate || new Date().toISOString().split('T')[0]);
-            setUrl(entry.url || '');
+            setUrl(entry.link || entry.url || '');
             setNotes(entry.notes || '');
         }
     }, [location.state]);
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!title.trim()) {
             alert('Please enter a course title');
             return;
         }
 
-        const newEntry = {
-            id: editId || Date.now(),
-            title,
-            platform,
-            instructor,
-            progress: parseInt(progress) || 0,
-            status,
-            startDate,
-            url,
-            notes
-        };
+        setIsSaving(true);
+        try {
+            const entryData = {
+                title,
+                platform,
+                instructor,
+                progress: parseInt(progress) || 0,
+                status,
+                startDate,
+                link: url,
+                notes
+            };
 
-        const existingEntries = JSON.parse(localStorage.getItem('course_entries') || '[]');
-
-        if (editId) {
-            const updatedEntries = existingEntries.map(ent => ent.id === editId ? newEntry : ent);
-            localStorage.setItem('course_entries', JSON.stringify(updatedEntries));
-        } else {
-            const updatedEntries = [newEntry, ...existingEntries];
-            localStorage.setItem('course_entries', JSON.stringify(updatedEntries));
+            if (editId) {
+                await courseApi.update(editId, entryData);
+            } else {
+                await courseApi.create(entryData);
+            }
+            navigate('/courses');
+        } catch (err) {
+            console.error('Failed to save course:', err);
+            alert('Failed to save course');
+        } finally {
+            setIsSaving(false);
         }
-
-        navigate('/courses');
     };
 
     const statusColors = {
@@ -90,14 +94,17 @@ const CourseNewEntry = () => {
                     </button>
                     <button
                         onClick={handleSave}
+                        disabled={isSaving}
                         style={{
                             display: 'flex', alignItems: 'center', gap: '8px',
                             backgroundColor: '#fff', color: 'black', border: 'none',
                             padding: '8px 24px', borderRadius: '6px', fontSize: '14px',
-                            fontWeight: 600, cursor: 'pointer'
+                            fontWeight: 600, cursor: isSaving ? 'not-allowed' : 'pointer',
+                            opacity: isSaving ? 0.7 : 1
                         }}
                     >
-                        <Save size={16} /> {editId ? 'Update Course' : 'Save Course'}
+                        {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} 
+                        {isSaving ? 'Saving...' : editId ? 'Update Course' : 'Save Course'}
                     </button>
                 </div>
 

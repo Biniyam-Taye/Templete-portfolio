@@ -71,11 +71,13 @@ const HeroSection = () => {
   // Dynamic Data Extraction
   const dynamicHome = (!loading && homeData?.[0]) ? homeData[0] : {
     title: "DIGITAL ARTISAN",
-    roles: "UI/UX DESIGNER, CREATIVE DIRECTOR, BRAND STRATEGIST",
+    roles: "USER EXPERIENCE & INTERFACE DESIGNER, CREATIVE DIRECTOR, BRAND STRATEGIST",
     imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop"
   };
 
-  const roles = dynamicHome.roles.split(',').map(r => r.trim());
+  // Ensure we display the long form even if DB has short form
+  const rawRoles = dynamicHome.roles.replace(/UI\/UX DESIGNER/gi, "USER EXPERIENCE & INTERFACE DESIGNER");
+  const roles = rawRoles.split(',').map(r => r.trim());
 
   useEffect(() => {
     const timer = setInterval(() => {

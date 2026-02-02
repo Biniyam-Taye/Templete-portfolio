@@ -61,6 +61,12 @@ const PortfolioHome = () => {
   const { data: journey, loading: journeyLoading } = useCollection('journey');
   const { data: achievements, loading: achievementsLoading } = useCollection('achievements');
 
+  // Debug logging
+  React.useEffect(() => {
+    console.log('[PortfolioHome] Portfolio data:', portfolio);
+    console.log('[PortfolioHome] Portfolio loading:', portfolioLoading);
+  }, [portfolio, portfolioLoading]);
+
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
   const [galleryIndex, setGalleryIndex] = useState(0);

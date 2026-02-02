@@ -2,7 +2,17 @@ import { useState, useEffect } from 'react';
 import { dummyData } from '../data/dummyData';
 
 export const useCollection = (collectionName, sortField = 'createdAt') => {
-  const [data, setData] = useState([]);
+  // Initialize with data immediately to avoid empty state
+  const [data, setData] = useState(() => {
+    try {
+      const result = dummyData[collectionName] || [];
+      console.log(`[useCollection] Initializing ${collectionName}:`, result);
+      return result;
+    } catch (err) {
+      console.error(`[useCollection] Error initializing ${collectionName}:`, err);
+      return [];
+    }
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -11,6 +21,8 @@ export const useCollection = (collectionName, sortField = 'createdAt') => {
     const timer = setTimeout(() => {
       try {
         const result = dummyData[collectionName] || [];
+        console.log(`[useCollection] Loading ${collectionName}:`, result);
+        console.log(`[useCollection] Available collections:`, Object.keys(dummyData));
         setData(result);
         setLoading(false);
       } catch (err) {

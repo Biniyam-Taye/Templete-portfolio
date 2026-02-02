@@ -152,7 +152,7 @@ const PortfolioGallery = ({ items = [], onItemClick }) => {
       <style>{`
         @media (max-width: 768px) {
           #portfolio {
-            display: none !important;
+            padding: 60px 5% !important;
           }
           .grid-premium {
             grid-template-columns: repeat(2, 1fr) !important; /* 2 Columns */
